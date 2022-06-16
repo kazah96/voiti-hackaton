@@ -7,18 +7,16 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
+    .setTitle('Api docs')
+    .setDescription('Api description')
     .setVersion('1.0')
-    .addTag('cats')
+    .addBearerAuth({ type: 'http' })
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('boker', app, document);
+  SwaggerModule.setup('swagger', app, document);
 
   const port = app.get(ConfigService).get('PORT');
-  // console.log("port", port);
-  // console.log(cs.get())
   await app.listen(port || 3001);
 }
 bootstrap();

@@ -23,6 +23,13 @@
       "justMyCode": true
     },
     {
+      "command": "yarn start:dev",
+      "name": "Development nest",
+      "cwd": "${workspaceFolder}/nest-backend/",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
       "name": "Python: Module",
       "type": "python",
       "request": "launch",
