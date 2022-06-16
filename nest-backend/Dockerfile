@@ -7,7 +7,7 @@ COPY . /app
 RUN yarn build
 CMD ["yarn", "start:dev"]
 
-FROM node:alpine
+FROM node:alpine as prod
 WORKDIR /app
 # Копирует содержимое всей папки
 COPY --from=build /app .
