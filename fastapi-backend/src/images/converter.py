@@ -6,8 +6,15 @@ import numpy
 
 def convert_png_to_28bitmap(image_bytes: bytes) -> Image.Image:
     image = Image.open(io.BytesIO(image_bytes))
+
     image = ImageOps.grayscale(image)
     image = image.resize((28, 28))
+    arr = from_28bitmap_to_array(image)
+    mean = arr.mean()
+    if mean > 127:
+        image = ImageOps.invert(image)
+
+    print(mean)
 
     return image
 
