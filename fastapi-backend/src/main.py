@@ -1,5 +1,8 @@
 from time import sleep
 from fastapi import FastAPI
+from typing import Optional
+from pydantic import BaseModel, EmailStr, Field
+
 import socketio
 
 app = FastAPI()
@@ -10,7 +13,6 @@ ws_app = socketio.ASGIApp(sio)
 ggg = {
     "a": 10
 }
-
 
 @app.get("/eaq")
 async def h():

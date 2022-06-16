@@ -1,27 +1,17 @@
 version: "3.9" # optional since v1.27.0
 services:
-  redis:
-    ports:
-      - "6379:6379"
-    image: redis
-
-  # django-backend:
-  #   build: ./django-backend
-  #   # command: ["python ./src/manage.py runserver 0.0.0.0:8000"]
-  #   command: "python ./src/manage.py runserver 0.0.0.0:8000"
-
-  #   volumes:
-  #     - ./django-backend/src:/project/src
+  # redis:
   #   ports:
-  #     - "8000:8000"
+  #     - "6379:6379"
+  #   image: redis
 
-  fastapi-backend:
-    build: ./fastapi-backend
-    command: "uvicorn src.main:root --port 7609 --host 0.0.0.0 --reload"
-    volumes:
-      - ./fastapi-backend/src:/project/src
-    ports:
-      - 7609:7609
+  # fastapi-backend:
+  #   build: ./fastapi-backend
+  #   command: "uvicorn src.main:root --port 7609 --host 0.0.0.0 --reload"
+  #   volumes:
+  #     - ./fastapi-backend/src:/project/src
+  #   ports:
+  #     - 7609:7609
 
   nest-backend:
     build: ./nest-backend
@@ -39,22 +29,32 @@ services:
       - ./react-frontend/src:/project/src
     ports:
       - 3000:3000
-    environment:
-      CHOKIDAR_USEPOLLING: "true"
-      NODE_ENV: development
 
   nginx:
     build: ./nginx
     ports:
       - 8080:8080
       - 8081:8081
+    environment:
+      REACT_FRONTEND_HOST: host.docker.internal
+      REACT_FRONTEND_PORT: 3000
+      NEST_BACKEND_HOST: 62.113.104.153
+      NEST_BACKEND_PORT: 3001
     restart: always
-    depends_on:
-      - fastapi-backend
-      # - react-frontend
 
   telegram-bot:
     build: ./telegram-bot
     command: "yarn dev"
     volumes:
       - ./telegram-bot/src:/project/src
+    environment:
+      TOKEN: "${TELEGRAM_BOT_TOKEN}"
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "${MONGO_ROOT_USER}"
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_ROOT_PASSWORD}"
+    ports:
+      - "${MONGO_PORT}:27017"

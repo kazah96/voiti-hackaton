@@ -1,0 +1,36 @@
+sendfile on;
+
+# Here using envsbstr to replace ${} to env values
+# Docs here https://hub.docker.com/_/nginx
+
+upstream docker-react-frontend {
+    # server host.docker.internal:3000;
+    server ${REACT_FRONTEND_HOST}:${REACT_FRONTEND_PORT};
+}
+
+upstream docker-nest-backend {
+    # server host.docker.internal:3001;
+    server ${NEST_BACKEND_HOST}:${NEST_BACKEND_PORT};
+}
+
+server {
+    listen 8080;
+
+    location / {
+        proxy_pass http://docker-react-frontend;
+        proxy_redirect     off;
+        proxy_set_header   Host $host;
+        proxy_set_header   X-Real-IP $remote_addr;
+        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Host $server_name;
+    }
+
+    location /api/ {
+        proxy_pass http://docker-nest-backend/;
+        proxy_redirect     off;
+        proxy_set_header   Host $host;
+        proxy_set_header   X-Real-IP $remote_addr;
+        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Host $server_name;
+    }
+}
