@@ -3,3 +3,5 @@ fastapi[all]
 python-socketio
 numpy
 scipy
+matplotlib
+Pillow

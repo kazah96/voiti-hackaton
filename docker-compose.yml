@@ -40,6 +40,9 @@ services:
       REACT_FRONTEND_PORT: 3000
       NEST_BACKEND_HOST: 62.113.104.153
       NEST_BACKEND_PORT: 3001
+      FASTAPI_BACKEND_HOST: host.docker.internal
+      FASTAPI_BACKEND_PORT: 5000
+
     restart: always
 
   telegram-bot:
