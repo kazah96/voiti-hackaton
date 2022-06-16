@@ -1,5 +1,7 @@
+import { Routing } from 'pages';
 import { FC, useEffect, useState } from 'react';
-import { getCats } from './network/lib/user';
+import { getCats } from '../network/lib/user';
+import { withProviders } from './providers';
 import useStyles from './styles';
 
 const App: FC = () => {
@@ -18,8 +20,9 @@ const App: FC = () => {
           {item.name} {item.age} {item.breed}
         </div>
       ))}
+      <Routing />
     </div>
   );
 };
 
-export { App };
+export default withProviders(App);
