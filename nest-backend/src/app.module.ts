@@ -9,12 +9,12 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthController } from './modules/auth/auth.controller';
 
 // REMOVE
-import * as dotenv from 'dotenv';
+// import * as dotenv from 'dotenv';
 
-dotenv.config();
+// dotenv.config();
 
 const mongoDbConnectionString = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`;
-
+console.log(mongoDbConnectionString)
 @Module({
   imports: [
     MongooseModule.forRoot(mongoDbConnectionString),

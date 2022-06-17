@@ -1,15 +1,12 @@
 version: "3.9" # optional since v1.27.0
 services:
   fastapi-backend:
-    build: 
-      context: ./fastapi-backend
-      dockerfile: ./Dockerfile
-      target: build
+    build: ./fastapi-backend
     command: "python src/run.py"
     ports:
       - 5000:5000
     environment:
-      MODE: dev
+      MODE: prod
 
   nest-backend:
     build:
@@ -21,14 +18,17 @@ services:
     environment:
       MONGO_USER: "${MONGO_ROOT_USER}"
       MONGO_PASSWORD: "${MONGO_ROOT_PASSWORD}"
-      MONGO_PORT: "27017"
-      MONGO_HOST: "mongo"
+      MONGO_PORT: 27017
+      MONGO_HOST: mongo
       TOKEN_SECRET: "${JWT_TOKEN_SECRET}"
+    depends_on:
+      - mongo
 
   react-frontend:
     build:
       context: ./react-frontend
-      dockerfile: ./Dockerfile.prod
+      dockerfile: ./Dockerfile
+      target: prod
     ports:
       - 3000:80
   nginx:
@@ -37,6 +37,19 @@ services:
       - 80:8080
       # - 8081:8081
     restart: always
+    environment:
+      REACT_FRONTEND_HOST: react-frontend
+      REACT_FRONTEND_PORT: "${REACT_FRONTEND_PORT}"
+      NEST_BACKEND_HOST: nest-backend
+      NEST_BACKEND_PORT: "${NEST_BACKEND_PORT}"
+      FASTAPI_BACKEND_HOST: fastapi-backend
+      FASTAPI_BACKEND_PORT: "${FASTAPI_BACKEND_PORT}"
+
+    depends_on:
+      - nest-backend
+      - react-frontend
+      - fastapi-backend
+
   mongo:
     image: mongo
     restart: always
