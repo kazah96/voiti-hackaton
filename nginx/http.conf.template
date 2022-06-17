@@ -14,7 +14,7 @@ upstream docker-nest-backend {
 }
 
 upstream docker-fastapi-backend {
-    # server host.docker.internal:3001;
+    # server host.docker.internal:5000;
     server ${FASTAPI_BACKEND_HOST}:${FASTAPI_BACKEND_PORT};
 }
 
@@ -32,15 +32,7 @@ server {
     }
 
     location /api/ {
-        location /api/fastapi/ {
-            proxy_pass http://docker-fastapi-backend/;
-            proxy_redirect     off;
-            proxy_set_header   Host $host;
-            proxy_set_header   X-Real-IP $remote_addr;
-            proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header   X-Forwarded-Host $server_name;
-        }
-
+      
         proxy_pass http://docker-nest-backend/;
         proxy_redirect     off;
         proxy_set_header   Host $host;
@@ -48,5 +40,15 @@ server {
         proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header   X-Forwarded-Host $server_name;
     }
+
+    location /api/fastapi/ {
+        proxy_pass http://docker-fastapi-backend/;
+        proxy_redirect     off;
+        proxy_set_header   Host $host;
+        proxy_set_header   X-Real-IP $remote_addr;
+        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Host $server_name;
+    }
+
 
 }
