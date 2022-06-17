@@ -1,3 +1,4 @@
+import os
 from time import sleep
 from fastapi import FastAPI
 from typing import Optional
@@ -13,7 +14,9 @@ ws_app = socketio.ASGIApp(sio)
 
 
 recognition = DigitRecognition()
-recognition.network.load_model("neural/model.json")
+print(os.path.realpath(__file__))
+# print(os.environ['PYTHONPATH'])
+recognition.network.load_model("src/models/model.json")
 
 make_endpoints(app, sio, recognition)
 

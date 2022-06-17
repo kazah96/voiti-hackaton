@@ -13,12 +13,8 @@ def make_endpoints(app: FastAPI, sio: AsyncServer, recognition: DigitRecognition
         image = convert_png_to_28bitmap(in_file)
         arr = from_28bitmap_to_array(image)
         image_array = numpy.asfarray(arr).reshape((28, 28))
-        show_plot(image_array)
-
         result = recognition.guess_number(arr.tolist())
-
-        image.save('gdfsg.jpg')
-
+        print("ebaka")
         return result
 
     @app.post('/save_file')

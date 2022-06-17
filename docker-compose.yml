@@ -5,13 +5,13 @@ services:
   #     - "6379:6379"
   #   image: redis
 
-  # fastapi-backend:
-  #   build: ./fastapi-backend
-  #   command: "uvicorn src.main:root --port 7609 --host 0.0.0.0 --reload"
-  #   volumes:
-  #     - ./fastapi-backend/src:/project/src
-  #   ports:
-  #     - 7609:7609
+  fastapi-backend:
+    build: ./fastapi-backend
+    command: "python src/run.py"
+    volumes:
+      - ./fastapi-backend/src:/project/src
+    ports:
+      - 5000:5000
 
   nest-backend:
     build:

@@ -130,28 +130,13 @@ class DigitRecognition:
         return self.network.query(input_values)
 
     def load_test_set(self):
-        for record in DigitRecognition.load_and_transform_csv("./datasets/mnist_test_10.csv"):
+        for record in DigitRecognition.load_and_transform_csv("./datasets/mnist_test.csv"):
             self.test_set.append(record)
 
     def load_train_set(self):
         for record in DigitRecognition.load_and_transform_csv("./datasets/mnist_train.csv"):
             self.train_set.append(record)
 
-# c = NeuralNetwork(2, 15, 3, 0.4)
-# print(c.train([1, 2], [1, 1, 1]))
-
-# main = Main()
-
-
-# main.load_csv()
-# main.train_set
-
-# record = main.train_set[0]
-# values = record[1]
-
-# image_array = numpy.asfarray(values).reshape((28, 28))
-# plotting.show_plot(image_array)
-# print('sdf')
 
 def check_validity():
     digit_recognition = DigitRecognition()
