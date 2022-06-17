@@ -1,5 +1,14 @@
 import TelegramBot from "node-telegram-bot-api";
 import mongoose, { Schema } from "mongoose";
+import axios from "axios";
+import fs from "fs";
+import * as dotenv from "dotenv";
+import FormData from "form-data";
+
+dotenv.config();
+
+const FASTAPI_HOST = process.env.FASTAPI_HOST;
+const FASTAPI_PORT = process.env.FASTAPI_PORT;
 
 const token = process.env.TOKEN;
 
@@ -16,6 +25,9 @@ if (!(mongo_host && mongo_password && mongo_port && mongo_user)) {
   throw new Error("Mongo settings not enough");
 }
 
+const fastapiUrl = `http://${FASTAPI_HOST}:${FASTAPI_PORT}`;
+
+const http = axios.create({ baseURL: fastapiUrl });
 const mongoDbConnectionString = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`;
 
 if (typeof token !== "string") {
@@ -37,16 +49,34 @@ const catSchema = new Schema({
 const Cat = mongoose.model("Cat", catSchema);
 const bot = new TelegramBot(token, { polling: true });
 
+bot.on("photo", async (msg) => {
+  if (msg.photo) {
+    const file = await bot.getFile(msg.photo[0].file_id);
+
+    if (!file.file_path) {
+      return;
+    }
+
+    const file_url = `https://api.telegram.org/file/bot${token}/${file.file_path}`;
+
+    const result = await http.post("/guess_number_by_url", { file_url });
+
+    bot.sendMessage(msg.chat.id, JSON.stringify(result.data));
+    bot.sendMessage(msg.chat.id, `Скорее всего это ${result.data[0]}`);
+  }
+});
+
 bot.onText(/\/add_cat (\w+)/, async (msg, match) => {
   if (!match) {
     return null;
   }
 
+  console.log("sdgdf");
   const name = match[1];
   const cat = new Cat({
     name: match[1],
     age: Math.random() * 100,
-    breed: "fsd",
+    breed: "fswefewd",
   });
 
   const result = await cat.save();
@@ -58,7 +88,7 @@ bot.onText(/\/get_cats/, async (msg: any) => {
 
   const answer = cats.map((cat) => ({
     name: cat.name,
-    age: cat.age,
+    age: cat.age + 12312312321,
     breed: cat.breed,
   }));
 
