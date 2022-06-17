@@ -25,3 +25,10 @@ docker container commit 17e707c3449c nest
 docker image tag nest poquepoque/worker-image-repo:nest
 
 docker image push poquepoque/worker-image-repo:nest
+
+# FASTAPI
+docker container commit 17e707c3449c fastapi
+
+docker image tag fastapi poquepoque/worker-image-repo:fastapi
+
+docker image push poquepoque/worker-image-repo:fastapi

@@ -1,5 +1,16 @@
 version: "3.9" # optional since v1.27.0
 services:
+  fastapi-backend:
+    build: 
+      context: ./fastapi-backend
+      dockerfile: ./Dockerfile
+      target: build
+    command: "python src/run.py"
+    ports:
+      - 5000:5000
+    environment:
+      MODE: dev
+
   nest-backend:
     build:
       context: ./nest-backend
@@ -42,11 +53,3 @@ services:
   #   environment:
   #     TOKEN: "${TELEGRAM_BOT_TOKEN}"
 
-  # mongo:
-  #   image: mongo
-  #   restart: always
-  #   environment:
-  #     MONGO_INITDB_ROOT_USERNAME: "${MONGO_ROOT_USER}"
-  #     MONGO_INITDB_ROOT_PASSWORD: "${MONGO_ROOT_PASSWORD}"
-  #   ports:
-  #     - "27019:27017"

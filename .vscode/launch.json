@@ -5,6 +5,24 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "cwd": "${fileDirname}",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "Python: Fastapi unicorn",
+      "type": "python",
+      "request": "launch",
+      "cwd": "${fileDirname}",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
       "command": "yarn start:dev",
       "name": "Development nest",
       "cwd": "${workspaceFolder}/nest-backend/",
