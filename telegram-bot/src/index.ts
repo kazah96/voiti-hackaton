@@ -1,9 +1,7 @@
 import TelegramBot from "node-telegram-bot-api";
 import mongoose, { Schema } from "mongoose";
 import axios from "axios";
-import fs from "fs";
 import * as dotenv from "dotenv";
-import FormData from "form-data";
 
 dotenv.config();
 
@@ -76,7 +74,7 @@ bot.onText(/\/add_cat (\w+)/, async (msg, match) => {
   const cat = new Cat({
     name: match[1],
     age: Math.random() * 100,
-    breed: "fswefewd",
+    breed: "test breed",
   });
 
   const result = await cat.save();
@@ -88,7 +86,7 @@ bot.onText(/\/get_cats/, async (msg: any) => {
 
   const answer = cats.map((cat) => ({
     name: cat.name,
-    age: cat.age + 12312312321,
+    age: cat.age,
     breed: cat.breed,
   }));
 

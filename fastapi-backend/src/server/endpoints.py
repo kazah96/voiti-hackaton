@@ -9,12 +9,7 @@ from neural.plotting import show_plot
 import requests
 
 
-# class GuessnumberModel(BaseModel):
-#     name: str
-#     description: str | None = None
-#     price: float
-#     tax: float | None = None
-
+# TODO: разобраться с Body параметрами для fastapi
 class Item(BaseModel):
     file_url: str
 
@@ -37,40 +32,14 @@ def make_endpoints(app: FastAPI, sio: AsyncServer, recognition: DigitRecognition
         result = recognition.guess_number(arr.tolist())
         return result
 
-    @app.post('/save_file')
-    def save_file(in_file: bytes = File(...)):
-
-        return "got it"
-
-    ggg = {
-        "a": 10
-    }
-
-    @app.get("/eaq")
-    async def h():
-        return {'as': 123}
-
-    @app.get("/api/")
-    async def root():
-        return ggg
-
-    @app.get("/q")
-    def ggf():
-        for i in range(5):
-            print(i)
-            sleep(1)
-
-        return {"m": "done"}
-
     @sio.event
     def connect(a, b, c):
-        print("ddw")
+        print("User has been connected via websocket")
 
-    @sio.on("eve")
-    async def eve(sid, data):
-        print("Eve", sid, data)
+    @sio.on("websocket_test_event")
+    async def websocket_test_event(sid, data):
+        print("Inited websocket_test_event", sid, data)
 
-        ggg["a"] += 1
-        await sio.emit("aaa", "ddf")
-        return "sdfsdf"
-        # await sio.send("sdfsdf", to=sid)
+        await sio.emit("websocket_test_event", "Workds")
+
+        return "Is it possible"
