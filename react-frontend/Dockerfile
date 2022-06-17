@@ -9,7 +9,7 @@ COPY . /app
 RUN yarn build
 
 # stage 2 - build the final image and copy the react build files
-FROM nginx:alpine
+FROM nginx:alpine as prod
 COPY --from=build /app/build /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx/nginx.conf /etc/nginx/conf.d

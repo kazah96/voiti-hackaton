@@ -5,30 +5,40 @@ services:
   #     - "6379:6379"
   #   image: redis
 
-  # fastapi-backend:
-  #   build: ./fastapi-backend
-  #   command: "uvicorn src.main:root --port 7609 --host 0.0.0.0 --reload"
-  #   volumes:
-  #     - ./fastapi-backend/src:/project/src
-  #   ports:
-  #     - 7609:7609
+  fastapi-backend:
+    build: ./fastapi-backend
+    command: "python src/run.py"
+    volumes:
+      - ./fastapi-backend/src:/project/src
+    ports:
+      - 5000:5000
 
   nest-backend:
-    build: ./nest-backend
+    build:
+      context: ./nest-backend
+      dockerfile: Dockerfile
+      target: build
     command: "yarn start:dev"
     volumes:
       - ./nest-backend/src:/project/src
     ports:
       - 3001:3001
-
-  react-frontend:
-    build: ./react-frontend
-    command: "yarn start"
-    # command: "ls"
-    volumes:
-      - ./react-frontend/src:/project/src
-    ports:
-      - 3000:3000
+    environment:
+      MONGO_USER: "${MONGO_ROOT_USER}"
+      MONGO_PASSWORD: "${MONGO_ROOT_PASSWORD}"
+      MONGO_PORT: 27019
+      MONGO_HOST: host.docker.internal
+      TOKEN_SECRET: "${JWT_TOKEN_SECRET}"
+    depends_on:
+      - mongo
+  # react-frontend:
+  #   build: ./react-frontend
+  #   command: "yarn start"
+  #   # command: "ls"
+  #   volumes:
+  #     - ./react-frontend/src:/project/src
+  #   ports:
+  #     - 3000:3000
 
   nginx:
     build: ./nginx
@@ -38,17 +48,33 @@ services:
     environment:
       REACT_FRONTEND_HOST: host.docker.internal
       REACT_FRONTEND_PORT: 3000
-      NEST_BACKEND_HOST: 62.113.104.153
+      NEST_BACKEND_HOST: host.docker.internal
       NEST_BACKEND_PORT: 3001
+      FASTAPI_BACKEND_HOST: host.docker.internal
+      FASTAPI_BACKEND_PORT: 5000
     restart: always
 
   telegram-bot:
-    build: ./telegram-bot
-    command: "yarn dev"
+    build:
+      context: ./telegram-bot
+      dockerfile: Dockerfile
+      target: build
+    command: "yarn start:dev"
     volumes:
-      - ./telegram-bot/src:/project/src
+      - ./telegram-bot/src:/app/src
     environment:
       TOKEN: "${TELEGRAM_BOT_TOKEN}"
+      MONGO_USER: "${MONGO_ROOT_USER}"
+      MONGO_PASSWORD: "${MONGO_ROOT_PASSWORD}"
+      # MONGO_PORT: 27019
+      # MONGO_HOST: host.docker.internal
+      # FASTAPI_HOST: host.docker.internal
+      # FASTAPI_PORT: 5000
+
+      MONGO_PORT: 27017
+      MONGO_HOST: mongo
+      FASTAPI_HOST: fastapi-backend
+      FASTAPI_PORT: 5000
 
   mongo:
     image: mongo
