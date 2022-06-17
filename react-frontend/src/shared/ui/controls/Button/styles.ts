@@ -1,4 +1,4 @@
-import { makeStyles } from 'theme';
+import { makeStyles } from 'shared/theme';
 
 export const useStyles = makeStyles(() => ({
   text: {

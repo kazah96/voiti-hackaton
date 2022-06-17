@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 import { IconProps } from './types';
 
@@ -25,7 +25,7 @@ export const Icon: React.FC<IconProps> = ({ className, name, iconComponent, fill
 
   return (
     <IconComponent
-      className={classNames(classes.icon, { fill: fill }, { pointer: props.onClick }, className)}
+      className={clsx(classes.icon, { fill: fill }, { pointer: props.onClick }, className)}
       {...props}
     />
   );
