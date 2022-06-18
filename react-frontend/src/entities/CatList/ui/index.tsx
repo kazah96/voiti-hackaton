@@ -6,7 +6,7 @@ export const CatList = () => {
 
   useEffect(() => {
     catListStore.getCats();
-  }, []);
+  }, [catListStore]);
 
   return (
     <div>

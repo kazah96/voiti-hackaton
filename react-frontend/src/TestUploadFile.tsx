@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { uploadFile } from './network/lib/user';
+import { uploadFile } from './shared/api/lib/user';
 
 export function TestUploadFile() {
   const [file, setFile] = useState(null);

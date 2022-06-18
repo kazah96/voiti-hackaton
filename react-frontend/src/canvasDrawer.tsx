@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { tryGuess, uploadFile } from './network/lib/user';
+import { tryGuess } from './shared/api/lib/user';
 
 const CANVAS_WIDTH = 500;
 const CANVAS_HEIGHT = 500;

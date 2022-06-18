@@ -3,6 +3,13 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "target": "es5",
+    // "paths": {
+    //   "@entities/*": ["entities/*"],
+    //   "@features/*": ["features/*"],
+    //   "@pages/*": ["pages/*"],
+    //   "@shared/*": ["features/*"],
+    //   "@widgets/*": ["widgets/*"]
+    // },
     "lib": [
       "dom",
       "dom.iterable",
@@ -23,6 +30,6 @@
     "experimentalDecorators": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "react-jsx"
   }
 }
