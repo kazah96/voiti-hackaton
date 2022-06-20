@@ -1,5 +1,5 @@
 import { Auth } from 'components/user/auth';
 
 export const LoginPage = () => {
-  return <Auth />;
+  return <Auth isLogin={true} />;
 };
