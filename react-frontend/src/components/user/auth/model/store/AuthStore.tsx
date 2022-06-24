@@ -17,7 +17,7 @@ export class AuthStore {
 
   @action
   singIn = (data: SingInData) => {
-    axiosClient.post('/auth/login', data).then((response) => {
+    return axiosClient.post('/auth/login', data).then((response) => {
       localStorage.setItem('accessToken', response.data.access_token);
       console.log(response);
     });

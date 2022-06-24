@@ -6,6 +6,7 @@ export const useStyles = makeStyles(() => ({
     'border': '1px solid rgba(63, 54, 54, 0.1)',
     'background': '#F8F8F8',
     'height': 40,
+    'marginBottom': 15,
 
     'label + &': {
       marginTop: 3,
@@ -31,7 +32,7 @@ export const useStyles = makeStyles(() => ({
 
   focused: {
     background: '#fff',
-    boxShadow: `0px 0px 0px 3px #000`,
+    border: `0px 0px 0px 3px #000`,
   },
   focusedDark: {
     background: '#252525',
@@ -40,7 +41,7 @@ export const useStyles = makeStyles(() => ({
 
   input: {
     'position': 'relative',
-    'padding': '8px 16px',
+    'padding': '8px 16px !important',
     'fontSize': '1rem',
     'fontWeight': 'normal',
     'letterSpacing': '0.01em',
