@@ -1,7 +1,7 @@
 import { ProtectedRoute } from 'components/user/auth';
 import { Route, Routes } from 'react-router-dom';
 import { LoginPage, RegistrationPage } from './auth';
-import { TestPage } from './test';
+import { HomePage } from './home';
 
 export const Routing = () => {
   return (
@@ -10,7 +10,7 @@ export const Routing = () => {
         path="/"
         element={
           <ProtectedRoute>
-            <TestPage />
+            <HomePage />
           </ProtectedRoute>
         }
       />
