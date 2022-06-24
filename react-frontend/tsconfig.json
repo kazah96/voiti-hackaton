@@ -6,7 +6,7 @@
     // "paths": {
     //   "@entities/*": ["entities/*"],
     //   "@features/*": ["features/*"],
-    //   "@pages/*": ["pages/*"],
+    //   "@pages": ["pages/*"],
     //   "@shared/*": ["features/*"],
     //   "@widgets/*": ["widgets/*"]
     // },

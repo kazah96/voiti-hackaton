@@ -1,4 +1,4 @@
-import { CatList } from 'entities/CatList/ui';
+import { CatList } from 'components/CatList/ui';
 
 export const TestPage = () => {
   return (

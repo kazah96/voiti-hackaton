@@ -1,9 +1,5 @@
-import { Navigate } from 'react-router-dom';
+import { AuthProvider } from 'components/user/auth';
 
 export const withAuth = (component: () => React.ReactNode) => () => {
-  const accessToken = localStorage.getItem('jwt_token');
-  if (!accessToken) {
-    return <Navigate to="/login" replace />;
-  }
-  return component();
+  return <AuthProvider>{component()}</AuthProvider>;
 };
