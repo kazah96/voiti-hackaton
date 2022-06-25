@@ -1,8 +1,9 @@
 import { Header } from 'components/header';
-import { Organization } from 'components/organization';
+import { Organization, OrganizationProvider } from 'components/organization';
+import { observer } from 'mobx-react';
 import { useStyles } from './styles';
 
-export const OrganizationPage = () => {
+export const OrganizationPage = observer(() => {
   const classes = useStyles();
 
   return (
@@ -10,8 +11,9 @@ export const OrganizationPage = () => {
       <div className={classes.menu}>
         <Header />
       </div>
-
-      <Organization />
+      <OrganizationProvider>
+        <Organization />
+      </OrganizationProvider>
     </div>
   );
-};
+});

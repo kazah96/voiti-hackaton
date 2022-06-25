@@ -1,24 +1,16 @@
 import { useAuthContext } from 'components/user/auth';
-import { Button } from 'shared/ui';
-import { useStyles } from './styles';
+import { observer } from 'mobx-react';
+import { useMemo } from 'react';
+import { AddOrganization } from './AddOrganization';
 import { UsersOrganization } from './UsersOrganization';
 
-export const Organization = () => {
-  const classes = useStyles();
-  const {
-    auth: { isOrganization },
-  } = useAuthContext();
+export const Organization = observer(() => {
+  const { auth } = useAuthContext();
 
-  const addOrganization = () => {
-    return (
-      <div className={classes.addOrg}>
-        <div className={classes.addTitle}>У вас пока нет организации</div>
-        <Button color="primary" variant="contained">
-          Добавить организацию
-        </Button>
-      </div>
-    );
-  };
+  const renderOrg = useMemo(
+    () => (auth.user ? <UsersOrganization /> : <AddOrganization />),
+    [auth.user]
+  );
 
-  return <div>{isOrganization ? <UsersOrganization /> : addOrganization()}</div>;
-};
+  return <div>{renderOrg}</div>;
+});

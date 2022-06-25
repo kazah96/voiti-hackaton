@@ -8,13 +8,20 @@ export class AuthStore {
 
   @computed
   get isOrganization() {
-    return this.user?.organization?.length > 0;
+    return this.user?.organizations?.length > 0;
   }
 
   @action
   singUp = (data: SingUpData) => {
-    axiosClient.post('/auth/register', data).then((response) => {
-      console.log(response);
+    axiosClient.post('/auth/register', data).then(() => {
+      this.singIn({ email: data.email, password: data.password });
+    });
+  };
+
+  @action
+  getUser = () => {
+    axiosClient.get('/users/me').then((response: ResponseData<User>) => {
+      this.user = response.data;
     });
   };
 
@@ -24,7 +31,6 @@ export class AuthStore {
       this.accessToken = response.data.access_token;
       localStorage.setItem('accessToken', response.data.access_token);
       this.user = response.data.user;
-      console.log(response);
     });
   };
 }

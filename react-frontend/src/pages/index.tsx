@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { LoginPage, RegistrationPage } from './auth';
 import { HomePage } from './home';
 import { OrganizationPage } from './organization';
+import { ProfilePage } from './profile';
 
 export const Routing = () => {
   return (
@@ -11,7 +12,7 @@ export const Routing = () => {
         path="/"
         element={
           <ProtectedRoute>
-            <HomePage />
+            <ProfilePage />
           </ProtectedRoute>
         }
       />

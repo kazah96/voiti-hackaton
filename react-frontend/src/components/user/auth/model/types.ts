@@ -3,7 +3,8 @@ export interface User {
   name: string;
   roles: string[];
   isAdmin: boolean;
-  organization: string[];
+  organizations: string[];
+  _id: string;
 }
 
 export interface AuthFormData {

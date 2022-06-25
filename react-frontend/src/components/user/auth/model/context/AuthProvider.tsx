@@ -1,4 +1,4 @@
-import React, { createContext, useMemo, useState } from 'react';
+import React, { createContext, useEffect, useMemo, useState } from 'react';
 import { observer } from 'mobx-react';
 import { AuthStore } from '../store/AuthStore';
 
@@ -17,6 +17,12 @@ const { Provider } = AuthContext;
 
 export const AuthProvider: React.FC = observer(({ children }) => {
   const [state] = useState<IContext>(initialState);
+
+  useEffect(() => {
+    if (state.accessToken) {
+      state.auth.getUser();
+    }
+  }, [state.accessToken, state.auth]);
 
   const contextValue = useMemo(() => ({ ...state }), [state]);
 
