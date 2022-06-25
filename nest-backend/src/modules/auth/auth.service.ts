@@ -13,7 +13,7 @@ export class AuthService {
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.findOne(email);
     if (!user) {
-      throw new HttpException('user doesnt exists', HttpStatus.BAD_REQUEST);
+      throw new HttpException("user doesn't exists", HttpStatus.BAD_REQUEST);
     }
 
     if (await bcrypt.compare(password, user.password)) {

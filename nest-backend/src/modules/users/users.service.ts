@@ -29,6 +29,7 @@ export class UsersService {
       name,
       password,
       roles: [Role.Admin, Role.User],
+      isAdmin: false,
     });
     return this.sanitizeUser(await createdUser.save());
   }
@@ -41,5 +42,9 @@ export class UsersService {
 
   async findOne(email: string) {
     return await this.userModel.findOne({ email }).exec();
+  }
+
+  async findAll() {
+    return await this.userModel.find().exec();
   }
 }
