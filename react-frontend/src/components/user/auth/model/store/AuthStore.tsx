@@ -1,8 +1,12 @@
-import { action, computed, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import { axiosClient } from 'shared/api/apiClient';
 import type { ResponseData, SingInData, SingInDTO, SingUpData, User } from '../types';
 
 export class AuthStore {
+  constructor() {
+    makeObservable(this);
+  }
+
   @observable user: User = null;
   @observable accessToken: string = null;
 

@@ -16,6 +16,7 @@ export const UsersOrganization = observer(() => {
 
   useEffect(() => {
     getOrganizationUsers(user.organizations[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const columns = useMemo(() => {

@@ -16,6 +16,7 @@ export const AddOrganization = observer(() => {
 
   useEffect(() => {
     auth.getUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toggleDialog = () => {

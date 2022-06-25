@@ -1,10 +1,14 @@
 import { OrganizationUsersDTO } from 'components/organization/types';
 import { ResponseData } from 'components/user/auth';
-import { action, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 import { axiosClient } from 'shared/api/apiClient';
 import { OrganizationUsersMap } from '../utils/mappers';
 
 export class OrganizationStore {
+  constructor() {
+    makeObservable(this);
+  }
+
   @observable organizationUsers = [];
 
   @action

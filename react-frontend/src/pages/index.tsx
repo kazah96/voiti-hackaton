@@ -12,7 +12,7 @@ export const Routing = () => {
         path="/"
         element={
           <ProtectedRoute>
-            <ProfilePage />
+            <HomePage />
           </ProtectedRoute>
         }
       />
@@ -28,7 +28,7 @@ export const Routing = () => {
         path="/profile"
         element={
           <ProtectedRoute>
-            <HomePage />
+            <ProfilePage />
           </ProtectedRoute>
         }
       />
