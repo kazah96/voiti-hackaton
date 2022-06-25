@@ -5,7 +5,7 @@ export function getUser() {
 }
 
 export function getCats() {
-  return axiosClient.get('/cats');
+  return axiosClient.get('/users');
 }
 
 export function getFromPython() {

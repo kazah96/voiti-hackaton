@@ -9,9 +9,9 @@ const App: FC = () => {
   const classes = useStyles();
   const [a, b] = useState([]);
 
-  // useEffect(() => {
-  //   getCats().then((data) => b(data.data));
-  // }, []);
+  useEffect(() => {
+    getCats().then((data) => b(data.data));
+  }, []);
 
   useEffect(() => {
     getFromPython().then((res) => {

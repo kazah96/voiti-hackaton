@@ -36,4 +36,9 @@ export class AppController {
   anon(@Request() req) {
     return 'раотает со всеми';
   }
+
+  @Get('/test')
+  qw(@Request() req) {
+    return 'раотает со вс dеми';
+  }
 }
