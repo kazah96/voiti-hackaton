@@ -1,24 +1,29 @@
-import { action, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { axiosClient } from 'shared/api/apiClient';
-import type { SingInData, SingUpData, User } from '../types';
+import type { ResponseData, SingInData, SingInDTO, SingUpData, User } from '../types';
 
 export class AuthStore {
   @observable user: User = null;
+  @observable accessToken: string = null;
+
+  @computed
+  get isOrganization() {
+    return this.user?.organization?.length > 0;
+  }
 
   @action
   singUp = (data: SingUpData) => {
     axiosClient.post('/auth/register', data).then((response) => {
-      const { email, name, role } = response.data;
-      this.user = { email, name, role };
-
       console.log(response);
     });
   };
 
   @action
   singIn = (data: SingInData) => {
-    return axiosClient.post('/auth/login', data).then((response) => {
+    return axiosClient.post('/auth/login', data).then((response: ResponseData<SingInDTO>) => {
+      this.accessToken = response.data.access_token;
       localStorage.setItem('accessToken', response.data.access_token);
+      this.user = response.data.user;
       console.log(response);
     });
   };

@@ -1,12 +1,13 @@
+import { observer } from 'mobx-react';
 import { Navigate } from 'react-router-dom';
-import { useAuthContext } from '../context';
 
-export const ProtectedRoute = ({ children }) => {
-  const { accessToken } = useAuthContext();
+export const ProtectedRoute = observer(({ children }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  debugger;
 
   if (!accessToken) {
     return <Navigate to="/login" replace />;
   }
 
   return children;
-};
+});

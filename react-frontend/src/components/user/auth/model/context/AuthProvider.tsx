@@ -9,7 +9,7 @@ export type IContext = {
 
 const initialState: IContext = {
   auth: new AuthStore(),
-  accessToken: '',
+  accessToken: localStorage.getItem('accessToken') as string | '',
 };
 
 export const AuthContext = createContext(initialState);
@@ -17,9 +17,8 @@ const { Provider } = AuthContext;
 
 export const AuthProvider: React.FC = observer(({ children }) => {
   const [state] = useState<IContext>(initialState);
-  const accessToken = localStorage.getItem('accessToken') as string | '';
 
-  const contextValue = useMemo(() => ({ ...state, accessToken }), [accessToken, state]);
+  const contextValue = useMemo(() => ({ ...state }), [state]);
 
   return <Provider value={contextValue}>{children}</Provider>;
 });

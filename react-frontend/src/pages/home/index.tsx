@@ -1,39 +1,55 @@
 import { Header } from 'components/header';
-import { useMemo } from 'react';
-import { Table, TableProps } from 'shared/ui/Table';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router';
+import { Icon, IconNamesType } from 'shared/ui';
+
 import { useStyles } from './styles';
+
+const menu: { icon: IconNamesType; name: string; link: string }[] = [
+  {
+    icon: 'organization',
+    name: 'Личный кабинет',
+    link: 'profile',
+  },
+  {
+    icon: 'organization',
+    name: 'Организация',
+    link: 'organization',
+  },
+  {
+    icon: 'organization',
+    name: 'Логирование',
+    link: 'logs',
+  },
+  {
+    icon: 'organization',
+    name: 'Выход',
+    link: 'out',
+  },
+];
 
 export const HomePage = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
 
-  const columns = useMemo(() => {
-    const result: TableProps['columns'] = [
-      {
-        Header: 'User',
-        accessor: 'user',
-        width: 230,
-      },
-      {
-        Header: 'Role',
-        accessor: 'role',
-        width: 100,
-      },
-      {
-        Header: 'Rating',
-        accessor: 'rating',
-      },
-    ];
-
-    return result;
-  }, []);
-
-  const tableData = useMemo(() => [{ user: 'Advocad', role: 'Admin', rating: 5 }], []);
+  const handleLink = useCallback((link) => () => navigate(`/${link}`), [navigate]);
 
   return (
     <div>
       <Header />
-      <div className={classes.table}>
-        <Table columns={columns} data={tableData} resizable flexible />
+      <div className={classes.title}>Добро пожаловать в систему мониторинга</div>
+      <div className={classes.menu}>
+        {menu.map((item) => {
+          return (
+            <div onClick={handleLink(item.link)} className={classes.block}>
+              <div>
+                <Icon name={item.icon} />
+              </div>
+
+              <div className={classes.name}>{item.name}</div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
