@@ -12,9 +12,11 @@ export class LogsStory {
   @observable logs: LogsData[] = [];
 
   @action
-  getLogs = () => {
-    return axiosClient.get('/logs').then((respose: ResponseData<LogsResponseData[]>) => {
-      this.logs = logsDataMap(respose.data);
-    });
+  getLogs = (organizationId) => {
+    return axiosClient
+      .get(`/logs?organizationID=${organizationId}`)
+      .then((respose: ResponseData<LogsResponseData>) => {
+        this.logs = logsDataMap(respose.data.logs);
+      });
   };
 }

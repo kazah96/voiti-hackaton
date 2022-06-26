@@ -4,6 +4,8 @@ export const OrganizationUsersMap = (data: User[]) => {
   const result = data.map((item) => ({
     name: item.name,
     email: item.email,
+    phone: item.phone,
+    isActivateToken: item.deviceId,
   }));
   return result;
 };

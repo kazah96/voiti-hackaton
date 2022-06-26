@@ -5,6 +5,8 @@ export interface User {
   isAdmin: boolean;
   organizations: string[];
   _id: string;
+  phone: string;
+  deviceId?: string;
 }
 
 export interface AuthFormData {
