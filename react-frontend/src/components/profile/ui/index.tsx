@@ -1,6 +1,6 @@
-import { useAuthContext } from 'components/user/auth';
+import { Auth, useAuthContext } from 'components/user/auth';
 import { observer } from 'mobx-react';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { GenerateAvatar } from 'shared/lib/GenerateAvatar';
 import { useStyles } from './styles';
 
@@ -9,10 +9,14 @@ export const UserInformation = observer(() => {
   const classes = useStyles();
 
   const {
-    auth: { user },
+    auth: { user, userOrgs, getOrganizations },
   } = useAuthContext();
 
-  const { name, email, roles, organizations } = user;
+  useEffect(() => {
+    getOrganizations(user.organizations);
+  }, [getOrganizations, user]);
+
+  const { name, email, organizations } = user;
 
   const handleGenerateUri = useCallback((data) => setUri(data), []);
 
@@ -28,18 +32,18 @@ export const UserInformation = observer(() => {
         <GenerateAvatar name={name} onGenerateUri={handleGenerateUri} />
       </div>
       <div className={classes.information}>
-        <div>{name}</div>
-        <div>{email}</div>
-        <div>
-          {roles.map((item) => (
-            <span>{item}</span>
-          ))}
-        </div>
-        <div>
-          {organizations.map((item) => (
-            <span>{item}</span>
-          ))}
-        </div>
+        <p>Имя: {name}</p>
+        <p>Электронная почта: {email}</p>
+        {userOrgs && userOrgs.length ? (
+          <div>
+            <p>Организации:</p>
+            {userOrgs.map(({ _id, name }, i) => (
+              <span key={_id}>
+                {i + 1}. {name}
+              </span>
+            ))}
+          </div>
+        ) : null}
       </div>
     </div>
   );

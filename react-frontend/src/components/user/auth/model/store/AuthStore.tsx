@@ -8,6 +8,7 @@ export class AuthStore {
   }
 
   @observable user: User = null;
+  @observable userOrgs = null;
   @observable accessToken: string = null;
 
   @computed
@@ -16,10 +17,16 @@ export class AuthStore {
   }
 
   @action
-  singUp = (data: SingUpData) => {
-    axiosClient.post('/auth/register', data).then(() => {
-      this.singIn({ email: data.email, password: data.password });
-    });
+  singUp = async (data: SingUpData) => {
+    return axiosClient
+      .post('/auth/register', data)
+      .then(() => {
+        this.singIn({ email: data.email, password: data.password });
+        return { text: 'Регистрация прошла успешно', status: 'ok' };
+      })
+      .catch((e) => {
+        return { text: 'Произошла ошибка регистрации', status: 'error' };
+      });
   };
 
   @action
@@ -36,6 +43,18 @@ export class AuthStore {
       localStorage.setItem('accessToken', response.data.access_token);
       this.user = response.data.user;
     });
+  };
+
+  @action
+  getOrganizations = async (ids: string[]) => {
+    const orgsFuncs = ids.map(async (id) => {
+      return await axiosClient.get(`/organization?id=${id}`);
+    });
+
+    const result = await Promise.all(orgsFuncs);
+    console.log(result);
+
+    this.userOrgs = result.map((resp) => resp.data);
   };
 
   @action

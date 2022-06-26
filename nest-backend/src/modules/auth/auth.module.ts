@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 import { PassportModule } from '@nestjs/passport';
@@ -8,11 +8,13 @@ import { LocalStrategy } from './local.strategy';
 import * as dotenv from 'dotenv';
 import { RolesGuard } from '../users/roles.guard';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { OrganizationModule } from '../organization/organization.module';
 dotenv.config();
 
 @Module({
   imports: [
-    UsersModule,
+    forwardRef(() => UsersModule),
+    OrganizationModule,
     PassportModule,
     JwtModule.register({
       signOptions: { expiresIn: '7d' },

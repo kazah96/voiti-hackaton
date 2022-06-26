@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { Button, TextField } from 'shared/ui';
@@ -7,6 +7,7 @@ import { useStyles } from './styles';
 import { AuthProps } from './types';
 
 export const Auth: FC<AuthProps> = ({ isLogin = false }) => {
+  const [message, setMessage] = useState<{ status: 'error' | 'ok'; text: string }>(null);
   const classes = useStyles();
   const { auth } = useAuthContext();
   const { control, handleSubmit } = useForm();
@@ -18,8 +19,20 @@ export const Auth: FC<AuthProps> = ({ isLogin = false }) => {
     });
   };
 
-  const onSubmit = (data) => {
-    return isLogin ? singIn(data) : auth.singUp(data);
+  const onSubmit = async (data) => {
+    let result;
+    if (isLogin) {
+      result = await singIn(data);
+
+      return setMessage(result);
+    }
+
+    result = await auth.singUp(data);
+    if (result.status === 'ok') {
+      navigate('/login');
+    }
+
+    return setMessage(result);
   };
 
   const handleRedirect = () => {
@@ -45,11 +58,11 @@ export const Auth: FC<AuthProps> = ({ isLogin = false }) => {
         <Controller
           name="password"
           control={control}
-          render={({ field }) => <TextField {...field} placeholder="Password" />}
+          render={({ field }) => <TextField {...field} placeholder="Password" type="password" />}
         />
 
         <Button type="submit" color="primary" variant="contained">
-          {isLogin ? 'Войти' : 'Отправить для индификации'}
+          {isLogin ? 'Войти' : 'Зарегистрироваться'}
         </Button>
         <Button
           onClick={handleRedirect}
@@ -57,8 +70,15 @@ export const Auth: FC<AuthProps> = ({ isLogin = false }) => {
           color="primary"
           variant="outlined"
         >
-          {isLogin ? 'Представиться' : 'Войти'}
+          {isLogin ? 'Зарегистрироваться' : 'Войти'}
         </Button>
+        {message && (
+          <p
+            className={message.status === 'error' ? classes.descriptionError : classes.description}
+          >
+            {message.text}
+          </p>
+        )}
       </form>
     </div>
   );

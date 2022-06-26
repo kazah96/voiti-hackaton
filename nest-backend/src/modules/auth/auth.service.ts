@@ -3,6 +3,11 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
+import { Organization } from '../organization/organization.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { CreateUserDto } from '../users/user.dto';
+import { UserLoginDTO } from './auth.dto';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -13,7 +18,7 @@ export class AuthService {
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.findOne(email);
     if (!user) {
-      throw new HttpException('user doesnt exists', HttpStatus.BAD_REQUEST);
+      throw new HttpException("user doesn't exists", HttpStatus.BAD_REQUEST);
     }
 
     if (await bcrypt.compare(password, user.password)) {
@@ -23,10 +28,17 @@ export class AuthService {
     }
   }
 
-  async login(user: any) {
-    const payload = { email: user.email, sub: user.userId, role: user.role };
+  async login({ email }: UserLoginDTO) {
+    const userResult = await this.usersService.findOne(email);
+
+    const payload = {
+      email: userResult.email,
+      sub: userResult._id,
+    };
+
     return {
       access_token: this.jwtService.sign(payload),
+      user: this.sanitizeUser(userResult),
     };
   }
 

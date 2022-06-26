@@ -12,8 +12,6 @@ export const CustomActionsCell: FC<CellProps<User>> = ({ row }) => {
     organization: { generateKeyByToken, deleteWorker },
   } = useOrganizationContext();
 
-  console.log(row);
-
   const handleAction = useCallback(
     (key) => {
       switch (key) {

@@ -20,4 +20,10 @@ export const useStyles = makeStyles(() => ({
   button: {
     marginTop: '10px !important',
   },
+  descriptionError: {
+    color: 'red',
+  },
+  description: {
+    color: 'green',
+  },
 }));

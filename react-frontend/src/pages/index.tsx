@@ -5,6 +5,7 @@ import { DevicesPage } from './devices';
 import { HomePage } from './home';
 import { LogsPage } from './logs';
 import { OrganizationPage } from './organization';
+import { WorkerLogs } from './organization/WorkerLogs';
 import { ProfilePage } from './profile';
 
 export const Routing = () => {
@@ -23,6 +24,14 @@ export const Routing = () => {
         element={
           <ProtectedRoute>
             <OrganizationPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/organization/:id"
+        element={
+          <ProtectedRoute>
+            <WorkerLogs />
           </ProtectedRoute>
         }
       />

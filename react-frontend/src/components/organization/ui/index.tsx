@@ -8,7 +8,7 @@ export const Organization = observer(() => {
   const { auth } = useAuthContext();
 
   const renderOrg = useMemo(
-    () => (auth.user ? <UsersOrganization /> : <AddOrganization />),
+    () => (auth?.user?.organizations?.length ? <UsersOrganization /> : <AddOrganization />),
     [auth.user]
   );
 

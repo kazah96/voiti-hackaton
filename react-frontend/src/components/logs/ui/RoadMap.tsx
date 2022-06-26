@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react';
 import { Table, TableProps } from 'shared/ui/Table';
 import { useLogsContext } from '../model';
 
-export const Logs = observer(() => {
+export const RoadMap = observer(() => {
   const {
     logs: { logs, getLogs },
   } = useLogsContext();
@@ -14,8 +14,11 @@ export const Logs = observer(() => {
 
   useEffect(() => {
     if (user) {
+      console.log(user.organizations[0]);
+
       getLogs(user.organizations[0]);
     }
+    console.log(logs);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
@@ -23,23 +26,19 @@ export const Logs = observer(() => {
   const columns = useMemo(() => {
     const result: TableProps['columns'] = [
       {
-        Header: 'Id Девайса',
-        accessor: 'workerDeviceId',
+        Header: 'Имя сотрудника',
+        accessor: 'deviceId',
       },
       {
-        Header: 'Имя пользователя',
-        accessor: 'workerName',
+        Header: 'Время прохода',
+        accessor: 'deviceInfo',
       },
       {
         Header: 'Направление',
-        accessor: 'direction',
+        accessor: 'date',
       },
       {
-        Header: 'Место',
-        accessor: 'gateName',
-      },
-      {
-        Header: 'Дата',
+        Header: 'Точка входа',
         accessor: 'date',
       },
     ];
@@ -47,5 +46,5 @@ export const Logs = observer(() => {
     return result;
   }, []);
 
-  return <Table columns={columns} data={logs} resizable flexible />;
+  return <div>123</div>;
 });

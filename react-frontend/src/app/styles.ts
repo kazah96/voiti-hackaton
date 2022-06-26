@@ -5,5 +5,6 @@ export default makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     margin: '32px auto',
+    fontFamily: 'Roboto',
   },
 }));
