@@ -1,94 +1,82 @@
-import React, {useCallback, useState, useRef} from 'react';
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
-import HCESession, {NFCContentType, NFCTagType4} from 'react-native-hce';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState, useRef, useEffect} from 'react';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Vibration,
+  View,
+} from 'react-native';
+import Logo from '../res/main_logo.svg';
+import {useRootStore} from '../stores/storeProvider';
+import {observer} from 'mobx-react';
+import button from '../res/sinaya_knopka_open_door2.json';
 
-export default function ClientKeyApp() {
-  const [content, setContent] = useState<string>('');
-  const [contentType, setContentType] = useState<NFCContentType>(
-    NFCContentType.Text,
-  );
+import LottieView from 'lottie-react-native';
 
-  const simulationInstance = useRef<HCESession | undefined>();
-  const [simulationEnabled, setSimulationEnabled] = useState<boolean>(false);
+const ONE_SECOND_IN_MS = 400;
 
-  const terminateSimulation = useCallback(async () => {
-    const instance = simulationInstance.current;
+const PATTERN = [ONE_SECOND_IN_MS, ONE_SECOND_IN_MS];
 
-    if (!instance) {
-      return;
-    }
+function ClientKeyApp() {
+  const [playing, setPlaying] = useState(false);
+  const store = useRootStore();
+  const animationRef = useRef<LottieView>(null);
 
-    await instance.terminate();
-    setSimulationEnabled(instance.active);
-  }, [setSimulationEnabled, simulationInstance]);
-
-  const startSimulation = useCallback(async () => {
-    const tag = new NFCTagType4(contentType, content);
-    simulationInstance.current = await new HCESession(tag).start();
-    setSimulationEnabled(simulationInstance.current.active);
-  }, [setSimulationEnabled, simulationInstance, content, contentType]);
-
-  const selectNFCType = useCallback(
-    type => {
-      setContentType(type);
-      console.log(type);
-      void terminateSimulation();
-    },
-    [setContentType, terminateSimulation],
-  );
-
-  const selectNFCContent = useCallback(
-    text => {
-      setContent(text);
-      void terminateSimulation();
-    },
-    [setContent, terminateSimulation],
-  );
+  useEffect(() => {
+    store.tagStore.run();
+  }, [store]);
 
   return (
     <View style={styles.container}>
-      <Text>Welcome to the HCE NFC Tag example.</Text>
-      <View style={{flexDirection: 'row'}}>
-        <Button
-          title="Text content"
-          onPress={() => selectNFCType(NFCContentType.Text)}
-          disabled={contentType === NFCContentType.Text}
-        />
-
-        <Button
-          title="URL content"
-          onPress={() => selectNFCType(NFCContentType.URL)}
-          disabled={contentType === NFCContentType.URL}
-        />
+      <View style={styles.logo}>
+        <Logo width={50} />
       </View>
-
-      <TextInput
-        onChangeText={text => selectNFCContent(text)}
-        value={content}
-        placeholder="Enter the content here."
-      />
-
-      <View style={{flexDirection: 'row'}}>
-        {!simulationEnabled ? (
-          <Button
-            title="Start hosting the tag"
-            onPress={() => startSimulation()}
-          />
+      <View style={{marginBottom: -70, marginTop: 70}}>
+        {store.tagStore.active ? (
+          <Text style={{color: '#8490D2', fontSize: 24}}>Scanning</Text>
         ) : (
-          <Button
-            title="Stop hosting the tag"
-            onPress={() => terminateSimulation()}
-          />
+          <Text>Loading</Text>
         )}
       </View>
+      <Text>{store.tagStore.token}</Text>
+      {/* <Text>sfd</Text> */}
+      <TouchableOpacity
+        style={{width: 400, height: 400}}
+        // disabled={true}
+        onPress={play}>
+        <LottieView
+          style={{opacity: playing ? 0.65 : 1}}
+          ref={animationRef}
+          loop={true}
+          source={button}
+        />
+      </TouchableOpacity>
     </View>
   );
+
+  function play() {
+    setPlaying(true);
+    animationRef.current.play();
+    Vibration.vibrate(PATTERN);
+  }
+
+  function stop() {
+    setPlaying(false);
+    animationRef.current?.reset();
+    animationRef.current?.pause();
+  }
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
+  logo: {
+    marginTop: -70,
+  },
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
 });
+
+export default observer(ClientKeyApp);
