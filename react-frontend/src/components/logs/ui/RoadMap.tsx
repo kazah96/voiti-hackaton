@@ -14,11 +14,8 @@ export const RoadMap = observer(() => {
 
   useEffect(() => {
     if (user) {
-      console.log(user.organizations[0]);
-
       getLogs(user.organizations[0]);
     }
-    console.log(logs);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
@@ -46,5 +43,5 @@ export const RoadMap = observer(() => {
     return result;
   }, []);
 
-  return <div>123</div>;
+  return <Table columns={columns} data={logs} resizable flexible />;
 });
