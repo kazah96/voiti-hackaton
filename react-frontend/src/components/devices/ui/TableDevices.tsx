@@ -1,8 +1,11 @@
 import { useOrganizationContext } from 'components/organization';
+import { User } from 'components/user/auth';
 import { observer } from 'mobx-react';
 import { useEffect, useMemo } from 'react';
-import { Table, TableProps } from 'shared/ui/Table';
+import { CellProps, Table, TableProps } from 'shared/ui/Table';
 import { useDevicesContext } from '../model/context';
+import { OrganizationDevice } from '../model/types';
+import { CustomActionsCell } from './CustomActionsCell';
 import { useStyles } from './styles';
 
 export const TableDevices = observer(() => {
@@ -28,6 +31,9 @@ export const TableDevices = observer(() => {
       {
         Header: 'Id Девайса',
         accessor: 'deviceId',
+        Cell: (props) => {
+          return <div>{props.value || 'Не активировано'}</div>;
+        },
       },
       {
         Header: 'Название точки',
@@ -40,6 +46,12 @@ export const TableDevices = observer(() => {
       {
         Header: 'Код',
         accessor: 'code',
+      },
+      {
+        Header: () => null,
+        accessor: 'actions',
+        Cell: (props: CellProps<any>) => <CustomActionsCell {...props} />,
+        width: 70,
       },
     ];
 
