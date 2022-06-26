@@ -1,7 +1,12 @@
 export interface User {
   email: string;
   name: string;
-  role: string[];
+  roles: string[];
+  isAdmin: boolean;
+  organizations: string[];
+  _id: string;
+  phone: string;
+  deviceId?: string;
 }
 
 export interface AuthFormData {
@@ -13,3 +18,11 @@ export interface SingUpData extends AuthFormData {
 }
 
 export interface SingInData extends AuthFormData {}
+
+export interface ResponseData<T> {
+  data: T;
+}
+export interface SingInDTO {
+  access_token: string;
+  user: User;
+}

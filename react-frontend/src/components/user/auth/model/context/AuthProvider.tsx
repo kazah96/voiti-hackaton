@@ -1,4 +1,4 @@
-import React, { createContext, useMemo, useState } from 'react';
+import React, { createContext, useEffect, useMemo, useState } from 'react';
 import { observer } from 'mobx-react';
 import { AuthStore } from '../store/AuthStore';
 
@@ -9,7 +9,7 @@ export type IContext = {
 
 const initialState: IContext = {
   auth: new AuthStore(),
-  accessToken: '',
+  accessToken: localStorage.getItem('accessToken') as string | '',
 };
 
 export const AuthContext = createContext(initialState);
@@ -17,9 +17,14 @@ const { Provider } = AuthContext;
 
 export const AuthProvider: React.FC = observer(({ children }) => {
   const [state] = useState<IContext>(initialState);
-  const accessToken = localStorage.getItem('accessToken') as string | '';
 
-  const contextValue = useMemo(() => ({ ...state, accessToken }), [accessToken, state]);
+  useEffect(() => {
+    if (state.accessToken) {
+      state.auth.getUser();
+    }
+  }, [state.accessToken, state.auth]);
+
+  const contextValue = useMemo(() => ({ ...state }), [state]);
 
   return <Provider value={contextValue}>{children}</Provider>;
 });
