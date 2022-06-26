@@ -6,6 +6,7 @@ export const OrganizationUsersMap = (data: User[]) => {
     email: item.email,
     phone: item.phone,
     isActivateToken: item.deviceId,
+    _id: item._id,
   }));
   return result;
 };

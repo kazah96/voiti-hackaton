@@ -22,4 +22,7 @@ export const useStyles = makeStyles(() => ({
       marginRight: 10,
     },
   },
+  actionButton: {
+    cursor: 'pointer',
+  },
 }));

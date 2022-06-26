@@ -1,12 +1,14 @@
-import { useAuthContext } from 'components/user/auth';
+import { useAuthContext, User } from 'components/user/auth';
 import { observer } from 'mobx-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { CellProps } from 'react-table';
 import { Button, Dialog } from 'shared/ui';
 import { Table, TableProps } from 'shared/ui/Table';
 import { useOrganizationContext } from '../model';
 import { SendDataForm } from '../types';
 import { AddWorker } from './AddWorker';
+import { CustomActionsCell } from './CustomActionsCell';
 import { useStyles } from './styles';
 
 export const UsersOrganization = observer(() => {
@@ -66,14 +68,15 @@ export const UsersOrganization = observer(() => {
         Header: 'Статус',
         accessor: 'isActivateToken',
         Cell: (props) => {
+          console.log(props);
           return <div>{props.value ? 'Активировано' : 'Не активировано'}</div>;
         },
       },
       {
         Header: () => null,
         accessor: 'actions',
-        //Cell: CustomActionsCell,
-        width: 30,
+        Cell: (props: CellProps<User>) => <CustomActionsCell {...props} />,
+        width: 70,
       },
     ];
 

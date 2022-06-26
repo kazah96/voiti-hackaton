@@ -1,4 +1,5 @@
 import { User } from 'components/user/auth';
+import { IconNamesType } from 'shared/ui';
 
 export interface OrganizationUsersDTO {
   admins: User[];
@@ -11,4 +12,9 @@ export interface SendDataForm {
   email: string;
   password: string;
   organization: string[];
+}
+
+export interface ActionButton {
+  key: string;
+  icon: IconNamesType;
 }
