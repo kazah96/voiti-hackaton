@@ -12,6 +12,12 @@ export class OrganizationStore {
   @observable organizationWorkers = [];
   @observable organizationAdmins = [];
   @observable organizationName: string = '';
+  @observable organizationId: string = '';
+
+  @action
+  setOrganizationId = (id: string) => {
+    this.organizationId = id;
+  };
 
   @action
   createOrganization = (data) => {
@@ -43,7 +49,14 @@ export class OrganizationStore {
     };
 
     axiosClient.post('/workers/generate_key_for_token', data).then((response) => {
-      debugger;
+      alert(`Ключ для сотрудника ${response.data.key}`);
+    });
+  };
+
+  @action
+  deleteWorker = (id: string) => {
+    return axiosClient.delete(`/workers?id=${id}`).then((response) => {
+      this.getOrganizationUsers(this.organizationId);
     });
   };
 }
