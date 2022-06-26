@@ -1,5 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import * as bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import { Organization } from '../organization/organization.schema';
 
