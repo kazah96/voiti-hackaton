@@ -1,34 +1,35 @@
+import { useOrganizationContext } from 'components/organization';
 import { useAuthContext } from 'components/user/auth';
 import { observer } from 'mobx-react';
 import { useEffect, useMemo } from 'react';
+import { useParams } from 'react-router';
 import { Table, TableProps } from 'shared/ui/Table';
 import { useLogsContext } from '../model';
 
 export const RoadMap = observer(() => {
+  const param = useParams();
   const {
-    logs: { logs, getLogs },
+    logs: { logsUser, getLogsUser },
   } = useLogsContext();
   const {
     auth: { user },
   } = useAuthContext();
-  // const {
-  //   organization: { organizationWorkers },
-  // } = useOrganizationContext();
+  const {
+    organization: { organizationWorkers },
+  } = useOrganizationContext();
 
-  // const nameWorker = useMemo(
-  //   () => organizationWorkers.find((item) => item._id === param.id),
-  //   [organizationWorkers]
-  // );
-
-  // console.log(organizationWorkers);
+  const nameDevice = useMemo(
+    () => organizationWorkers.find((item) => item._id === param.id),
+    [organizationWorkers]
+  );
 
   useEffect(() => {
-    if (user) {
-      getLogs(user.organizations[0]);
+    if (user && organizationWorkers) {
+      getLogsUser(user.organizations[0], nameDevice);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, organizationWorkers]);
 
   const columns = useMemo(() => {
     const result: TableProps['columns'] = [
@@ -57,5 +58,5 @@ export const RoadMap = observer(() => {
     return result;
   }, []);
 
-  return <Table columns={columns} data={logs} sorted resizable flexible />;
+  return <Table columns={columns} data={logsUser} sorted resizable flexible />;
 });

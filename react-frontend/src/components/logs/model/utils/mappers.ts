@@ -5,7 +5,7 @@ export const logsDataMap = (data: LogsResponse[]): LogsData[] => {
     id: item._id,
     workerDeviceId: item.workerDeviceId,
     direction: item.direction,
-    date: new Date(item.time).toLocaleDateString(),
+    date: new Date(item.time).toLocaleString(),
     workerName: item.workerName,
     gateName: item.gateName,
     isSuccess: item.isSuccess,
@@ -14,17 +14,20 @@ export const logsDataMap = (data: LogsResponse[]): LogsData[] => {
   return result;
 };
 
-export const logsDataUserMap = (data: LogsResponse[], useId: string): LogsData[] => {
-  debugger;
-  const result = data.map<LogsData>((item) => ({
-    id: item._id,
-    workerDeviceId: item.workerDeviceId,
-    direction: item.direction,
-    date: new Date(item.time).toLocaleDateString(),
-    workerName: item.workerName,
-    gateName: item.gateName,
-    isSuccess: item.isSuccess,
-  }));
+export const logsDataUserMap = (data: LogsResponse[], deviceId) => {
+  const result = data.filter((item) => {
+    if (deviceId?.name === item.workerDeviceId) {
+      return {
+        id: item._id,
+        workerDeviceId: item.workerDeviceId,
+        direction: item.direction,
+        date: new Date(item.time).toLocaleString(),
+        workerName: item.workerName,
+        gateName: item.gateName,
+        isSuccess: item.isSuccess,
+      };
+    }
+  });
 
   return result;
 };

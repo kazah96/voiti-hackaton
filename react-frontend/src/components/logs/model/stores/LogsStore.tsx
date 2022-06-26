@@ -10,6 +10,7 @@ export class LogsStore {
   }
 
   @observable logs: LogsData[] = [];
+  @observable logsUser = [];
 
   @action
   getLogs = (organizationId) => {
@@ -21,11 +22,11 @@ export class LogsStore {
   };
 
   @action
-  getLogsUser = (organizationId, useId) => {
+  getLogsUser = (organizationId, deviceId) => {
     return axiosClient
       .get(`/logs?organizationID=${organizationId}`)
       .then((respose: ResponseData<LogsResponseData>) => {
-        this.logs = logsDataUserMap(respose.data.logs, useId);
+        this.logsUser = logsDataUserMap(respose.data.logs, deviceId);
       });
   };
 }
