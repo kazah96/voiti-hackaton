@@ -70,6 +70,7 @@ export const Header: FC<HeaderProps> = ({ title }) => {
         link: 'profile',
       },
       { name: 'Организация', link: 'organization' },
+      { name: 'Устройства', link: 'devices' },
       { name: 'Логирование', link: 'logs' },
     ],
     []
