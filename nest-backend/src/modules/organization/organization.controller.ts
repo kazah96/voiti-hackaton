@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AddOrganizationDTO } from './organization.dto';
 import { OrganizationService } from './organization.service';
@@ -14,7 +14,7 @@ export class OrganizationController {
   }
 
   @Get()
-  async get() {
-    return this.organizationService.getAll();
+  async get(@Query('id') id?: string) {
+    return this.organizationService.getAll(id);
   }
 }

@@ -1,5 +1,6 @@
-import { Controller, Post, UseGuards, Body, Get } from '@nestjs/common';
+import { Controller, Get, Query, Req } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
 
 import { UsersService } from './users.service';
 
@@ -9,7 +10,12 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  async getAll() {
-    return this.usersService.findAll();
+  async getAll(@Query('organizationID') organizationID?: string) {
+    return this.usersService.findAll(organizationID);
+  }
+
+  @Get('/me')
+  async getMe(@Req() res: Request) {
+    return this.usersService.findOneByJWT(res);
   }
 }

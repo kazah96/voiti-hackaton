@@ -1,22 +1,22 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { AddWorkerRqDTO } from './workers.dto';
+import { isValidObjectId, Model } from 'mongoose';
+import { MailService } from '../mail/mail.service';
+import { AddWorkerRqDTO, GenerateKey, GenerateToken } from './workers.dto';
 import { Worker, WorkerDocument } from './workers.schema';
 
-const keys: Record<string, boolean> = {};
+const keys: Record<string, string> = {};
 
 @Injectable()
 export class WorkerService {
   constructor(
     @InjectModel(Worker.name)
     private workerModel: Model<WorkerDocument>,
+    private mailService: MailService,
   ) {}
 
   async addWorker({ name, email, organization, phone }: AddWorkerRqDTO) {
     try {
-      console.log({ name, email, organization, phone });
-
       const createdWorker = await this.workerModel.create({
         name,
         email,
@@ -30,41 +30,90 @@ export class WorkerService {
     }
   }
 
+  async removeWorker(id?: string) {
+    if (!id || !isValidObjectId(id)) {
+      throw new HttpException(
+        { error: 'Отправь айди нормально' },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const worker = await this.workerModel.findByIdAndDelete(id);
+
+    if (!worker) {
+      throw new HttpException(
+        { error: 'Такого работника нет' },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return worker;
+  }
+
   async getAll() {
     return await this.workerModel.find().exec();
   }
 
-  generateKey() {
-    return { key: keyGenerator() };
+  async generateKey({ workerEmail }: GenerateKey) {
+    if (!workerEmail) {
+      throw new HttpException(
+        { error: 'Требуется email' },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const worker = await this.workerModel
+      .findOne({ email: workerEmail })
+      .exec();
+
+    if (!worker) {
+      throw new HttpException(
+        { error: 'Работника с таким email не существует' },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const key = keyGenerator(6);
+    keys[key] = workerEmail;
+
+    // this.mailService.sendUserKey(workerEmail, key);
+
+    return { key };
   }
 
-  async generateToken(key: string) {
+  async generateToken({ deviceId, key }: GenerateToken) {
     if (keys[key]) {
-      return 'Красавчик брат';
+      const token = tokenGenerator(18);
+      await this.workerModel.findOneAndUpdate(
+        { email: keys[key] },
+        { $set: { keyPass: token, deviceId } },
+      );
+      delete keys[key];
+
+      return { token };
     }
+    throw new HttpException(
+      { error: 'Ключ не существует' },
+      HttpStatus.NOT_FOUND,
+    );
   }
 }
 
-function getRandomInt(max: number, min: number): number {
+export function getRandomInt(max: number, min: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function keyGenerator(): string {
-  const generatedKey = new Array(6)
+export function keyGenerator(length): string {
+  const generatedKey = new Array(length)
     .fill(0)
     .map(() => String.fromCharCode(getRandomInt(90, 65)))
     .join('');
 
-  keys[generatedKey] = true;
-
   return generatedKey;
 }
 
-function tokenGenerator(): string {
-  const generatedToken = new Array(18)
+export function tokenGenerator(length): string {
+  const generatedToken = new Array(length)
     .fill(0)
     .map(() => String.fromCharCode(getRandomInt(122, 65)))
     .join('');
 
-  return '';
+  return generatedToken;
 }

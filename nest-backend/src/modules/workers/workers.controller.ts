@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { AddWorkerRqDTO, GenerateToken } from './workers.dto';
+import { AddWorkerRqDTO, GenerateKey, GenerateToken } from './workers.dto';
 import { WorkerService } from './workers.service';
 
 @ApiTags('workers')
@@ -13,18 +13,23 @@ export class WorkersController {
     return this.workerService.addWorker(body);
   }
 
+  @Delete('')
+  async deleteWorker(@Query('id') id?: string) {
+    return this.workerService.removeWorker(id);
+  }
+
   @Get()
   async get() {
     return this.workerService.getAll();
   }
 
-  @Get('generate_key_for_token')
-  getKey() {
-    return this.workerService.generateKey();
+  @Post('/generate_key_for_token')
+  async getKey(@Body() body: GenerateKey) {
+    return this.workerService.generateKey(body);
   }
 
-  @Post('generate_token_by_key')
-  generateToken(@Body() { key }: GenerateToken) {
-    return this.workerService.generateToken(key);
+  @Post('/generate_token_by_key')
+  getToken(@Body() body: GenerateToken) {
+    return this.workerService.generateToken(body);
   }
 }

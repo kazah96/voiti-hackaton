@@ -16,7 +16,7 @@ export class Worker {
   phone: string;
 
   @Prop({ required: false })
-  androidId: string;
+  deviceId: string;
 
   @Prop({ required: false })
   keyPass: string;

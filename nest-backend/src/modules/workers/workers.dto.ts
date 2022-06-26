@@ -18,4 +18,12 @@ export class AddWorkerRqDTO {
 export class GenerateToken {
   @ApiProperty()
   key: string;
+
+  @ApiProperty()
+  deviceId: string;
+}
+
+export class GenerateKey {
+  @ApiProperty()
+  workerEmail: string;
 }
