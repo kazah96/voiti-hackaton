@@ -14,14 +14,17 @@ export const useStyles = makeStyles(() => ({
     marginRight: 15,
   },
   information: {
-    '& > div': {
-      border: '1px solid #ccc',
-      padding: '5px 10px',
-      borderRadius: 5,
-      marginBottom: 10,
+    '& > p': {
+      margin: 0,
+      padding: 0,
     },
+
     '& > div > span': {
       marginRight: 10,
+    },
+
+    '& > div > p': {
+      margin: '10px 0 0 0',
     },
   },
 }));

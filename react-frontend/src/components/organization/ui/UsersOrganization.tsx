@@ -92,9 +92,9 @@ export const UsersOrganization = observer(() => {
     <div className={classes.table}>
       <div className={classes.blockAdd}>
         <Button variant="outlined" color="primary" onClick={toggleDialog}>
-          Добавить в организацию
+          Добавить сотрудника
         </Button>
-        <div className={classes.admins}>Админитраторы: {rednerAdminsName()}</div>
+        <div className={classes.admins}>Администраторы: {rednerAdminsName()}</div>
       </div>
 
       <Table columns={columns} data={organizationWorkers} resizable flexible />
