@@ -23,4 +23,9 @@ export class DeviceStore {
   createDevice = (data: CreateDeviceData) => {
     return axiosClient.post('/devices/create', data);
   };
+
+  @action
+  activateDevice = (code: string) => {
+    return axiosClient.post(`/devices/${code}/activate`);
+  };
 }

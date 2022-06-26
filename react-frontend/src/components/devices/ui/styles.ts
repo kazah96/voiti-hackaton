@@ -8,4 +8,7 @@ export const useStyles = makeStyles(() => ({
     textAlign: 'center',
     fontSize: 30,
   },
+  actionButton: {
+    cursor: 'pointer',
+  },
 }));
