@@ -1,4 +1,6 @@
 import {makeAutoObservable, action, observable} from 'mobx';
+import {BLEClientStore} from './ble-client.store';
+import {BLEPeripheralStore} from './ble-peripheral.store';
 import {ReaderStore} from './reader.store';
 
 import {TagStore} from './tag.store';
@@ -9,6 +11,12 @@ class RootStore {
 
   @observable
   public tagStore = new TagStore();
+
+  @observable
+  public bleClientStore = new BLEClientStore();
+
+  @observable
+  public blePeripheralStore = new BLEPeripheralStore();
 
   @observable
   public readerStore = new ReaderStore();
