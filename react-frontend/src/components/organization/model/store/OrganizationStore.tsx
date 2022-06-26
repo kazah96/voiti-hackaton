@@ -49,7 +49,7 @@ export class OrganizationStore {
     };
 
     axiosClient.post('/workers/generate_key_for_token', data).then((response) => {
-      debugger;
+      alert(`Ключ для сотрудника ${response.data.key}`);
     });
   };
 
