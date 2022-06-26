@@ -3,9 +3,6 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-import { Organization } from '../organization/organization.schema';
-import { InjectModel } from '@nestjs/mongoose';
-import { CreateUserDto } from '../users/user.dto';
 import { UserLoginDTO } from './auth.dto';
 
 @Injectable()

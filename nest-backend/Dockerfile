@@ -11,4 +11,4 @@ FROM node:alpine as prod
 WORKDIR /app
 # Копирует содержимое всей папки
 COPY --from=build /app .
-CMD ["yarn", "start:prod"]
+# CMD ["yarn", "start:prod"]
