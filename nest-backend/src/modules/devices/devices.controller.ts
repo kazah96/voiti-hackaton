@@ -1,6 +1,5 @@
-import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Request } from 'express';
 import { ActivateDeviceDto, CreateDeviceDto } from './devices.dto';
 import { DevicesService } from './devices.service';
 
@@ -31,9 +30,4 @@ export class DeviceController {
   async update(@Param('code') code: string) {
     return this.deviceService.updateBase(code);
   }
-
-  // @Get('/me')
-  // async getMe(@Req() res: Request) {
-  //   return this.usersService.findOneByJWT(res);
-  // }
 }

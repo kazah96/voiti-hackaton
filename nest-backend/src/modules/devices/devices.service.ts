@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { InjectModel } from '@nestjs/mongoose';
-import { Request } from 'express';
 
 import { Model } from 'mongoose';
 import { Worker, WorkerDocument } from '../workers/workers.schema';
@@ -64,53 +63,4 @@ export class DevicesService {
       HttpStatus.NOT_FOUND,
     );
   }
-
-  //   sanitizeUser = (user: any) => {
-  //     const sanitized = user.toObject();
-  //     delete sanitized['password'];
-  //     return sanitized;
-  //   };
-
-  //   async findOne(email: string) {
-  //     return await this.userModel.findOne({ email }).exec();
-  //   }
-
-  //   async findOneByJWT(res: Request) {
-  //     const token = res.headers.authorization;
-  //     if (token) {
-  //       const newToken = token.substring(7, token.length);
-  //       const decoded = this.jwtService.decode(newToken) as { email: string };
-
-  //       const me = this.sanitizeUser(
-  //         await this.userModel.findOne({ email: decoded.email }).exec(),
-  //       );
-
-  //       return me;
-  //     } else {
-  //       throw new HttpException(
-  //         { error: 'not autorized' },
-  //         HttpStatus.UNAUTHORIZED,
-  //       );
-  //     }
-  //   }
-
-  //   async findAll({ organizationID }: { organizationID: string }) {
-  //     if (organizationID) {
-  //       const org = await this.organizationModel
-  //         .findById(organizationID)
-  //         .populate('admins');
-
-  //       return {
-  //         users: org.admins.map((admin) => {
-  //           const sanitized = (admin as any).toObject();
-  //           delete sanitized.password;
-  //           return sanitized;
-  //         }),
-  //       };
-  //     }
-
-  //     const users = await this.userModel.find().exec();
-
-  //     return users.map((user) => this.sanitizeUser(user));
-  //   }
 }
