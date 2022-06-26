@@ -9,7 +9,7 @@ import { useStyles } from './styles';
 
 const menu: { icon: IconNamesType; name: string; link: string }[] = [
   {
-    icon: 'organization',
+    icon: 'rrom',
     name: 'Личный кабинет',
     link: 'profile',
   },
@@ -19,14 +19,14 @@ const menu: { icon: IconNamesType; name: string; link: string }[] = [
     link: 'organization',
   },
   {
-    icon: 'organization',
+    icon: 'logi',
     name: 'Логирование',
     link: 'logs',
   },
   {
-    icon: 'organization',
-    name: 'Выход',
-    link: 'logout',
+    icon: 'devices',
+    name: 'Устройства',
+    link: 'devices',
   },
 ];
 
@@ -55,7 +55,7 @@ export const HomePage = () => {
         return (
           <div onClick={handleLink(item.link)} className={classes.block} key={item.link}>
             <div>
-              <Icon name={item.icon} />
+              <Icon className={classes.icon} name={item.icon} />
             </div>
 
             <div className={classes.name}>{item.name}</div>

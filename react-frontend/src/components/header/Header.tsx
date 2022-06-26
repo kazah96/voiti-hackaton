@@ -14,6 +14,8 @@ import ListItemText from '@mui/material/ListItemText';
 import { Link } from 'react-router-dom';
 import { FC, useMemo, useState } from 'react';
 import Typography from '@mui/material/Typography';
+import { Button } from '@mui/material';
+import { useAuthContext } from 'components/user/auth';
 
 const drawerWidth = 240;
 
@@ -63,6 +65,10 @@ export const Header: FC<HeaderProps> = ({ title }) => {
     setOpen(false);
   };
 
+  const {
+    auth: { logout },
+  } = useAuthContext();
+
   const menuList = useMemo(
     () => [
       {
@@ -76,22 +82,34 @@ export const Header: FC<HeaderProps> = ({ title }) => {
     []
   );
 
+  const handleClick = () => {
+    logout();
+    return (window.location.href = '/');
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar position="fixed" open={open}>
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            {title || 'Главная'}
-          </Typography>
+          <Box sx={{ display: 'flex', width: '100%' }}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{ mr: 2, ...(open && { display: 'none' }) }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+              <Typography variant="h6" noWrap component="div">
+                {title || 'Главная'}
+              </Typography>
+              <Button variant="text" color="inherit" onClick={handleClick}>
+                Выход
+              </Button>
+            </Box>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer
