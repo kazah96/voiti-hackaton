@@ -8,6 +8,7 @@ import {
   usePagination,
   useResizeColumns,
   useRowSelect,
+  useSortBy,
   useTable,
 } from 'react-table';
 
@@ -33,6 +34,7 @@ export const Table: React.FC<TableProps> = ({
   data,
   resizable,
   selectable,
+  sorted,
   disablePagination,
   tableOptions = {},
   tablePlugins = [],
@@ -56,17 +58,24 @@ export const Table: React.FC<TableProps> = ({
   const computedPlugins = useMemo(() => {
     const result = [
       useFlexLayout,
+      sorted ? useSortBy : null,
       !disablePagination ? usePagination : null,
       resizable ? useResizeColumns : null,
       selectable ? useRowSelect : null,
     ];
 
     return result.filter((v) => v);
-  }, [disablePagination, resizable, selectable]);
+  }, [disablePagination, resizable, selectable, sorted]);
 
   const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow } =
     useTable<TableDataType>(
-      { columns, data, defaultColumn, initialState: { pageIndex: 0 } as any, ...tableOptions },
+      {
+        columns,
+        data,
+        defaultColumn,
+        initialState: { pageIndex: 0, pageSize: 50 } as any,
+        ...tableOptions,
+      },
       ...computedPlugins,
       ...tablePlugins
     ) as TableInstance;
@@ -84,7 +93,7 @@ export const Table: React.FC<TableProps> = ({
             return (
               <th
                 {...(column.getHeaderProps(
-                  headerProps
+                  sorted ? column.getSortByToggleProps() : headerProps
                 ) as React.ThHTMLAttributes<HTMLTableCellElement>)}
                 key={column.id}
               >
@@ -95,13 +104,14 @@ export const Table: React.FC<TableProps> = ({
                     className={clsx(classes.resizer, { isResizing: column.isResizing })}
                   />
                 )}
+                <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
               </th>
             );
           })}
         </tr>
       );
     },
-    [classes.resizer, resizable]
+    [classes.resizer, resizable, sorted]
   );
 
   const renderRow = useCallback(

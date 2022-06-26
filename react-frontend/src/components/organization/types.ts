@@ -1,5 +1,5 @@
 import { User } from 'components/user/auth';
-import { IconNamesType } from 'shared/ui';
+import { IconNamesType } from 'shared/ui/Icon/types';
 
 export interface OrganizationUsersDTO {
   admins: User[];

@@ -23,6 +23,7 @@ export const OrganizationProvider: React.FC = observer(({ children }) => {
   useEffect(() => {
     if (user && !state.organization.organizationId) {
       state.organization.setOrganizationId(user.organizations[0] as string);
+      state.organization.getOrganizationUsers(user.organizations[0]);
     }
   }, [state.organization, user]);
 

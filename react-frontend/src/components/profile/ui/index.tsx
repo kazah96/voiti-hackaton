@@ -1,4 +1,4 @@
-import { Auth, useAuthContext } from 'components/user/auth';
+import { useAuthContext } from 'components/user/auth';
 import { observer } from 'mobx-react';
 import { useCallback, useEffect, useState } from 'react';
 import { GenerateAvatar } from 'shared/lib/GenerateAvatar';
@@ -16,7 +16,7 @@ export const UserInformation = observer(() => {
     getOrganizations(user.organizations);
   }, [getOrganizations, user]);
 
-  const { name, email, organizations } = user;
+  const { name, email } = user;
 
   const handleGenerateUri = useCallback((data) => setUri(data), []);
 

@@ -11,14 +11,21 @@ export const RoadMap = observer(() => {
   const {
     auth: { user },
   } = useAuthContext();
+  // const {
+  //   organization: { organizationWorkers },
+  // } = useOrganizationContext();
+
+  // const nameWorker = useMemo(
+  //   () => organizationWorkers.find((item) => item._id === param.id),
+  //   [organizationWorkers]
+  // );
+
+  // console.log(organizationWorkers);
 
   useEffect(() => {
     if (user) {
-      console.log(user.organizations[0]);
-
       getLogs(user.organizations[0]);
     }
-    console.log(logs);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
@@ -26,19 +33,23 @@ export const RoadMap = observer(() => {
   const columns = useMemo(() => {
     const result: TableProps['columns'] = [
       {
-        Header: 'Имя сотрудника',
-        accessor: 'deviceId',
+        Header: 'Id Девайса',
+        accessor: 'workerDeviceId',
       },
       {
-        Header: 'Время прохода',
-        accessor: 'deviceInfo',
+        Header: 'Имя пользователя',
+        accessor: 'workerName',
       },
       {
         Header: 'Направление',
-        accessor: 'date',
+        accessor: 'direction',
       },
       {
-        Header: 'Точка входа',
+        Header: 'Место',
+        accessor: 'gateName',
+      },
+      {
+        Header: 'Дата',
         accessor: 'date',
       },
     ];
@@ -46,5 +57,5 @@ export const RoadMap = observer(() => {
     return result;
   }, []);
 
-  return <div>123</div>;
+  return <Table columns={columns} data={logs} sorted resizable flexible />;
 });

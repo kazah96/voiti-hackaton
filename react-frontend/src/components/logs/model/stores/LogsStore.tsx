@@ -2,7 +2,7 @@ import { ResponseData } from 'components/user/auth';
 import { action, makeObservable, observable } from 'mobx';
 import { axiosClient } from 'shared/api/apiClient';
 import { LogsData, LogsResponseData } from '../type';
-import { logsDataMap } from '../utils/mappers';
+import { logsDataMap, logsDataUserMap } from '../utils/mappers';
 
 export class LogsStore {
   constructor() {
@@ -17,6 +17,15 @@ export class LogsStore {
       .get(`/logs?organizationID=${organizationId}`)
       .then((respose: ResponseData<LogsResponseData>) => {
         this.logs = logsDataMap(respose.data.logs);
+      });
+  };
+
+  @action
+  getLogsUser = (organizationId, useId) => {
+    return axiosClient
+      .get(`/logs?organizationID=${organizationId}`)
+      .then((respose: ResponseData<LogsResponseData>) => {
+        this.logs = logsDataUserMap(respose.data.logs, useId);
       });
   };
 }

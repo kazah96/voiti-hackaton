@@ -1,10 +1,8 @@
 import { useOrganizationContext } from 'components/organization';
-import { User } from 'components/user/auth';
 import { observer } from 'mobx-react';
 import { useEffect, useMemo } from 'react';
 import { CellProps, Table, TableProps } from 'shared/ui/Table';
 import { useDevicesContext } from '../model/context';
-import { OrganizationDevice } from '../model/types';
 import { CustomActionsCell } from './CustomActionsCell';
 import { useStyles } from './styles';
 

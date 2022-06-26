@@ -2,7 +2,8 @@ import { Header } from 'components/header';
 import { useAuthContext } from 'components/user/auth';
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router';
-import { Icon, IconNamesType } from 'shared/ui';
+import { Icon } from 'shared/ui';
+import { IconNamesType } from 'shared/ui/Icon/types';
 
 import { useStyles } from './styles';
 

@@ -15,6 +15,7 @@ export interface TableProps {
   data: TableDataType[];
   resizable?: boolean;
   flexible?: boolean;
+  sorted?: boolean;
   selectable?: boolean;
   disablePagination?: boolean;
   className?: string;
