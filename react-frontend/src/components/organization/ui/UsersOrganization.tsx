@@ -53,12 +53,27 @@ export const UsersOrganization = observer(() => {
       {
         Header: 'Имя',
         accessor: 'name',
-        width: 230,
       },
       {
         Header: 'Email',
         accessor: 'email',
-        width: 100,
+      },
+      {
+        Header: 'Телефон',
+        accessor: 'phone',
+      },
+      {
+        Header: 'Статус',
+        accessor: 'isActivateToken',
+        Cell: (props) => {
+          return <div>{props.value ? 'Активировано' : 'Не активировано'}</div>;
+        },
+      },
+      {
+        Header: () => null,
+        accessor: 'actions',
+        //Cell: CustomActionsCell,
+        width: 30,
       },
     ];
 

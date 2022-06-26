@@ -1,6 +1,6 @@
-import { LogsData, LogsResponseData } from '../type';
+import { LogsData, LogsResponse } from '../type';
 
-export const logsDataMap = (data: LogsResponseData[]): LogsData[] => {
+export const logsDataMap = (data: LogsResponse[]): LogsData[] => {
   const result = data.map((item) => ({
     id: item._id,
     deviceId: item.deviceId,

@@ -5,9 +5,13 @@ export interface LogsData {
   date: string;
 }
 
-export interface LogsResponseData {
+export interface LogsResponse {
   _id: string;
   deviceId: string;
   deviceInfo: string;
   time: Date;
+}
+
+export interface LogsResponseData {
+  logs: LogsResponse[];
 }

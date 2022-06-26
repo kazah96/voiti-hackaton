@@ -37,4 +37,9 @@ export class AuthStore {
       this.user = response.data.user;
     });
   };
+
+  @action
+  logout = () => {
+    return localStorage.removeItem('accessToken');
+  };
 }
