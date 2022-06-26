@@ -15,12 +15,14 @@ import button from '../res/ZAMOK DVA 4ERNYI.json';
 // 15 -
 function ReaderApp() {
   const [playing, setPlaying] = useState(false);
-  const {readerStore} = useRootStore();
+  const {readerStore, blePeripheralStore} = useRootStore();
 
   const animationRef = useRef<LottieView>(null);
   useEffect(() => {
     readerStore.run();
-  }, [readerStore]);
+
+    blePeripheralStore.run();
+  }, [readerStore, blePeripheralStore]);
 
   useEffect(() => {
     console.log(readerStore.doorState);

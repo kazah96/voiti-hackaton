@@ -25,6 +25,7 @@ function ClientKeyApp() {
 
   useEffect(() => {
     store.tagStore.run();
+    store.bleClientStore.run();
   }, [store]);
 
   return (
