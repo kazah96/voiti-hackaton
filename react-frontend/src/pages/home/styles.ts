@@ -33,4 +33,8 @@ export const useStyles = makeStyles(() => ({
   block: {
     cursor: 'pointer',
   },
+  icon: {
+    width: '100px',
+    height: '100px',
+  },
 }));
