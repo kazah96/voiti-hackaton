@@ -1,6 +1,6 @@
 import { useAuthContext } from 'components/user/auth';
 import { observer } from 'mobx-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Dialog } from 'shared/ui';
 import { Table, TableProps } from 'shared/ui/Table';
@@ -16,7 +16,13 @@ export const UsersOrganization = observer(() => {
   const { control, handleSubmit } = useForm();
 
   const {
-    organization: { getOrganizationUsers, generateKeyByToken, addWorker, organizationWorkers },
+    organization: {
+      getOrganizationUsers,
+      generateKeyByToken,
+      addWorker,
+      organizationWorkers,
+      organizationAdmins,
+    },
   } = useOrganizationContext();
   const {
     auth: { user },
@@ -59,11 +65,20 @@ export const UsersOrganization = observer(() => {
     return result;
   }, []);
 
+  const rednerAdminsName = useCallback(
+    () => organizationAdmins.map((admin) => admin.name).join(', '),
+    [organizationAdmins]
+  );
+
   return (
     <div className={classes.table}>
-      <Button variant="outlined" color="primary" onClick={toggleDialog}>
-        Добавить в организацию
-      </Button>
+      <div className={classes.blockAdd}>
+        <Button variant="outlined" color="primary" onClick={toggleDialog}>
+          Добавить в организацию
+        </Button>
+        <div className={classes.admins}>Админитраторы: {rednerAdminsName()}</div>
+      </div>
+
       <Table columns={columns} data={organizationWorkers} resizable flexible />
       <Dialog open={open} onOk={handleSubmit(onSubmit)}>
         <AddWorker control={control} />

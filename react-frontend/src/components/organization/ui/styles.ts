@@ -13,4 +13,13 @@ export const useStyles = makeStyles(() => ({
     fontSize: 33,
     marginBottom: 30,
   },
+  blockAdd: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  admins: {
+    '& > span': {
+      marginRight: 10,
+    },
+  },
 }));

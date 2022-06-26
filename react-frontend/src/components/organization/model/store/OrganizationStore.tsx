@@ -24,7 +24,7 @@ export class OrganizationStore {
       .get(`/organization?id=${organizationId}`)
       .then((response: ResponseData<OrganizationUsersDTO>) => {
         this.organizationWorkers = OrganizationUsersMap(response.data.workers);
-        this.organizationAdmins = OrganizationUsersMap(response.data.workers);
+        this.organizationAdmins = OrganizationUsersMap(response.data.admins);
         this.organizationName = response.data.name;
       });
   };
