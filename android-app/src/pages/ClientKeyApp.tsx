@@ -19,14 +19,22 @@ const ONE_SECOND_IN_MS = 400;
 const PATTERN = [ONE_SECOND_IN_MS, ONE_SECOND_IN_MS];
 
 function ClientKeyApp() {
-  const [playing, setPlaying] = useState(false);
   const store = useRootStore();
   const animationRef = useRef<LottieView>(null);
 
+  const isDeviceFound = store.bleClientStore.isDeviceFound;
   useEffect(() => {
     store.tagStore.run();
     store.bleClientStore.run();
   }, [store]);
+
+  useEffect(() => {
+    if (store.bleClientStore.isDeviceFound) {
+      stop();
+    } else {
+      play();
+    }
+  }, [store.bleClientStore.isDeviceFound]);
 
   return (
     <View style={styles.container}>
@@ -34,20 +42,25 @@ function ClientKeyApp() {
         <Logo width={50} />
       </View>
       <View style={{marginBottom: -70, marginTop: 70}}>
-        {store.tagStore.active ? (
+        {!isDeviceFound ? (
           <Text style={{color: '#8490D2', fontSize: 24}}>Scanning</Text>
         ) : (
-          <Text>Loading</Text>
+          <Text style={{color: '#8490D2', fontSize: 24}}>Device found</Text>
         )}
       </View>
       <Text>{store.tagStore.token}</Text>
-      {/* <Text>sfd</Text> */}
+
+      {store.bleClientStore.isDeviceFound ? (
+        <Text>Dvice found </Text>
+      ) : (
+        <Text>Not found</Text>
+      )}
       <TouchableOpacity
         style={{width: 400, height: 400}}
-        // disabled={true}
-        onPress={play}>
+        disabled={!store.bleClientStore.device}
+        onPress={open}>
         <LottieView
-          style={{opacity: playing ? 0.65 : 1}}
+          style={{opacity: !store.bleClientStore.device ? 0.65 : 1}}
           ref={animationRef}
           loop={true}
           source={button}
@@ -56,14 +69,18 @@ function ClientKeyApp() {
     </View>
   );
 
+  function open() {
+    store.bleClientStore.open();
+  }
+
   function play() {
-    setPlaying(true);
-    animationRef.current.play();
-    Vibration.vibrate(PATTERN);
+    if (animationRef.current) {
+      animationRef.current.play();
+      Vibration.vibrate(PATTERN);
+    }
   }
 
   function stop() {
-    setPlaying(false);
     animationRef.current?.reset();
     animationRef.current?.pause();
   }

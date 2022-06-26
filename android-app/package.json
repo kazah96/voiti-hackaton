@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "android1": "react-native run-android --deviceId=YP5H5XKVUOXGFIFM",
-    "android2": "react-native run-android --deviceId=52a9715d",
+    "android1": "react-native run-android --deviceId=YP5H5XKVUOXGFIFM --port 8082",
+    "android2": "react-native run-android --deviceId=52a9715d --port 8081",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, TextInput, Pressable} from 'react-native';
+import {View, StyleSheet, Text, TextInput, NativeModules, Pressable} from 'react-native';
 import Logo from '../res/main_logo.svg';
 import Subtract from '../res/subtract.svg';
 import {useRootStore} from '../stores/storeProvider';

@@ -14,7 +14,6 @@ import button from '../res/ZAMOK DVA 4ERNYI.json';
 // 0 - 15 Закрытие
 // 15 -
 function ReaderApp() {
-  const [playing, setPlaying] = useState(false);
   const {readerStore, blePeripheralStore} = useRootStore();
 
   const animationRef = useRef<LottieView>(null);
@@ -43,8 +42,8 @@ function ReaderApp() {
 
   return (
     <View style={[styles.wrapper]}>
-      <Text>{}</Text>
-      <AllKeys keyPairs={readerStore.keysTable} />
+      {/* <Text>{}</Text> */}
+      {/* <AllKeys keyPairs={readerStore.keysTable} /> */}
       <Text
         style={{
           fontSize: 24,
@@ -57,31 +56,21 @@ function ReaderApp() {
       <TouchableOpacity style={{width: 600, height: 600}}>
         <LottieView ref={animationRef} source={button} loop={false} />
       </TouchableOpacity>
-      {/* 
-      <Button onPress={error} title="Error"></Button>
-      <Button onPress={open} title="Open"></Button> */}
-    </View>
-  );
-
-  function open() {
-    readerStore.setDoorState('opened');
-  }
-  function error() {
-    readerStore.setDoorState('error');
-  }
-}
-
-function AllKeys({keyPairs}) {
-  return (
-    <View>
-      {Object.keys(keyPairs).map(key => (
-        <Text>
-          {key}: {keyPairs[key]}
-        </Text>
-      ))}
     </View>
   );
 }
+
+// function AllKeys({keyPairs}) {
+//   return (
+//     <View>
+//       {Object.keys(keyPairs).map(key => (
+//         <Text>
+//           {key}: {keyPairs[key].name}
+//         </Text>
+//       ))}
+//     </View>
+//   );
+// }
 
 const styles = StyleSheet.create({
   wrapper: {

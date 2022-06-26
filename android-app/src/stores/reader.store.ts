@@ -6,7 +6,15 @@ import {parseKey} from '../utils/encryption';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 type KeysTable = {
-  [deviceId: string]: string;
+  [deviceId: string]: {pass: string; name: string};
+};
+
+type Direction = 'in' | 'out';
+
+type KeyStatuses = {
+  [deviceId: string]: {
+    direction: Direction;
+  };
 };
 
 class ReaderStore {
@@ -16,6 +24,9 @@ class ReaderStore {
   public deviceId = 'asd';
   @observable
   public keysTable: KeysTable = {};
+
+  @observable
+  public keyStatuses: KeyStatuses = {};
 
   @observable
   public name = 'Дверь в толчок';
@@ -136,7 +147,11 @@ class ReaderStore {
   }
 
   @action.bound
-  private async sendLog(status: 'success' | 'error') {
+  private async sendLog(
+    status: 'success' | 'error',
+    direction: 'in' | 'out' | null,
+    error?: string,
+  ) {
     const currentDate = Date.now();
     console.log('sending log');
 
@@ -144,6 +159,8 @@ class ReaderStore {
       time: currentDate,
       deviceId: this.deviceId,
       status,
+      error,
+      direction,
       deviceInfo: 'ergerg',
     };
 
@@ -159,17 +176,28 @@ class ReaderStore {
     console.warn(pass, deviceId);
     console.warn(this.keysTable);
     const isValidEntry =
-      this.keysTable[deviceId] && this.keysTable[deviceId] === pass;
+      this.keysTable[deviceId] && this.keysTable[deviceId].pass === pass;
 
     if (this.doorState !== 'idle') {
       return;
     }
     if (!isValidEntry) {
       this.handleDoorState('error');
-      this.sendLog('error');
+      this.sendLog('error', null, 'Key is not valid');
     } else {
+      const currentDirection = this.keyStatuses[deviceId]
+        ? this.keyStatuses[deviceId].direction
+        : 'in';
+
+      Toast.show({
+        text1: `Client: ${this.keysTable[deviceId].name}, Direction: ${currentDirection}`,
+      });
+      this.keyStatuses[deviceId] = {
+        ...(this.keyStatuses[deviceId] || {}),
+        direction: currentDirection === 'in' ? 'out' : 'in',
+      };
       this.handleDoorState('opened');
-      this.sendLog('success');
+      this.sendLog('success', currentDirection);
     }
   }
 }
