@@ -9,7 +9,7 @@ export const OrganizationPage = observer(() => {
   return (
     <div>
       <div className={classes.menu}>
-        <Header />
+        <Header title="Организация" />
       </div>
       <OrganizationProvider>
         <Organization />

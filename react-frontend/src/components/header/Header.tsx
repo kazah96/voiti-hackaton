@@ -12,12 +12,17 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { Link } from 'react-router-dom';
-import { useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
+import Typography from '@mui/material/Typography';
 
 const drawerWidth = 240;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
+}
+
+interface HeaderProps {
+  title?: string;
 }
 
 const AppBar = styled(MuiAppBar, {
@@ -46,7 +51,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-export const Header = () => {
+export const Header: FC<HeaderProps> = ({ title }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
@@ -65,6 +70,7 @@ export const Header = () => {
         link: 'profile',
       },
       { name: 'Организация', link: 'organization' },
+      { name: 'Логирование', link: 'logs' },
     ],
     []
   );
@@ -82,6 +88,9 @@ export const Header = () => {
           >
             <MenuIcon />
           </IconButton>
+          <Typography variant="h6" noWrap component="div">
+            {title || 'Главная'}
+          </Typography>
         </Toolbar>
       </AppBar>
       <Drawer

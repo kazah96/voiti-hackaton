@@ -9,7 +9,9 @@ export class OrganizationStore {
     makeObservable(this);
   }
 
-  @observable organizationUsers = [];
+  @observable organizationWorkers = [];
+  @observable organizationAdmins = [];
+  @observable organizationName: string = '';
 
   @action
   createOrganization = (data) => {
@@ -19,15 +21,28 @@ export class OrganizationStore {
   @action
   getOrganizationUsers = (organizationId) => {
     return axiosClient
-      .get(`/users?organizationID=${organizationId}`)
+      .get(`/organization?id=${organizationId}`)
       .then((response: ResponseData<OrganizationUsersDTO>) => {
-        this.organizationUsers = OrganizationUsersMap(response.data.users);
+        this.organizationWorkers = OrganizationUsersMap(response.data.workers);
+        this.organizationAdmins = OrganizationUsersMap(response.data.workers);
+        this.organizationName = response.data.name;
       });
   };
 
   @action
   addWorker = (data) => {
     return axiosClient.post('workers/add', data).then((response) => {
+      debugger;
+    });
+  };
+
+  @action
+  generateKeyByToken = (email: string) => {
+    const data = {
+      workerEmail: email,
+    };
+
+    axiosClient.post('/workers/generate_key_for_token', data).then((response) => {
       debugger;
     });
   };
