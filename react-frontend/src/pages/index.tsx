@@ -1,6 +1,7 @@
 import { ProtectedRoute } from 'components/user/auth';
 import { Route, Routes } from 'react-router-dom';
 import { LoginPage, RegistrationPage } from './auth';
+import { DevicesPage } from './devices';
 import { HomePage } from './home';
 import { LogsPage } from './logs';
 import { OrganizationPage } from './organization';
@@ -38,6 +39,14 @@ export const Routing = () => {
         element={
           <ProtectedRoute>
             <LogsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/devices"
+        element={
+          <ProtectedRoute>
+            <DevicesPage />
           </ProtectedRoute>
         }
       />

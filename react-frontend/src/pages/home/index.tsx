@@ -61,7 +61,7 @@ export const HomePage = () => {
           </div>
         );
       }),
-    []
+    [classes.block, classes.name, handleLink]
   );
 
   return (

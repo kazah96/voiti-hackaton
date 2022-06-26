@@ -4,7 +4,7 @@ import { axiosClient } from 'shared/api/apiClient';
 import { LogsData, LogsResponseData } from '../type';
 import { logsDataMap } from '../utils/mappers';
 
-export class LogsStory {
+export class LogsStore {
   constructor() {
     makeObservable(this);
   }

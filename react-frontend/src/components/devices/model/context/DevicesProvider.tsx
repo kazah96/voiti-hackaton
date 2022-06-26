@@ -1,19 +1,19 @@
 import React, { createContext, useMemo, useState } from 'react';
 import { observer } from 'mobx-react';
-import { LogsStore } from '../stores/LogsStore';
+import { DeviceStore } from '../stores/DeviceStore';
 
 export type IContext = {
-  logs: LogsStore;
+  devices: DeviceStore;
 };
 
 const initialState: IContext = {
-  logs: new LogsStore(),
+  devices: new DeviceStore(),
 };
 
-export const LogsContext = createContext(initialState);
-const { Provider } = LogsContext;
+export const DevicesContext = createContext(initialState);
+const { Provider } = DevicesContext;
 
-export const LogsProvider: React.FC = observer(({ children }) => {
+export const DevicesProvider: React.FC = observer(({ children }) => {
   const [state] = useState<IContext>(initialState);
 
   const contextValue = useMemo(() => ({ ...state }), [state]);
