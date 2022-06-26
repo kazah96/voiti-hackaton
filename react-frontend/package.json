@@ -67,5 +67,6 @@
     "@types/react-router": "^5.1.18",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-table": "^7.7.12"
-  }
+  },
+  "proxy": "https://c78c-95-105-125-66.eu.ngrok.io"
 }

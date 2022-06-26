@@ -9,7 +9,7 @@ export const ProfilePage = observer(() => {
   } = useAuthContext();
   return (
     <div>
-      <Header />
+      <Header title="Личный кабинет" />
       {user && <UserInformation />}
     </div>
   );

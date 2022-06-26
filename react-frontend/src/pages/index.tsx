@@ -2,6 +2,7 @@ import { ProtectedRoute } from 'components/user/auth';
 import { Route, Routes } from 'react-router-dom';
 import { LoginPage, RegistrationPage } from './auth';
 import { HomePage } from './home';
+import { LogsPage } from './logs';
 import { OrganizationPage } from './organization';
 import { ProfilePage } from './profile';
 
@@ -36,7 +37,7 @@ export const Routing = () => {
         path="/logs"
         element={
           <ProtectedRoute>
-            <HomePage />
+            <LogsPage />
           </ProtectedRoute>
         }
       />
