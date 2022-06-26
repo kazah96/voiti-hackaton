@@ -24,4 +24,11 @@ export class OrganizationStore {
         this.organizationUsers = OrganizationUsersMap(response.data.users);
       });
   };
+
+  @action
+  addWorker = (data) => {
+    return axiosClient.post('workers/add', data).then((response) => {
+      debugger;
+    });
+  };
 }
