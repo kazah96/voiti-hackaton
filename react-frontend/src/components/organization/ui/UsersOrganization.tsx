@@ -9,6 +9,7 @@ import { useOrganizationContext } from '../model';
 import { SendDataForm } from '../types';
 import { AddWorker } from './AddWorker';
 import { CustomActionsCell } from './CustomActionsCell';
+import { CustomActionsCellForWorkersLogs } from './CustomActionsCellForWorkerLogs';
 import { useStyles } from './styles';
 
 export const UsersOrganization = observer(() => {
@@ -55,6 +56,7 @@ export const UsersOrganization = observer(() => {
       {
         Header: 'Имя',
         accessor: 'name',
+        Cell: (props: CellProps<User>) => <CustomActionsCellForWorkersLogs {...props} />,
       },
       {
         Header: 'Email',
@@ -68,7 +70,6 @@ export const UsersOrganization = observer(() => {
         Header: 'Статус',
         accessor: 'isActivateToken',
         Cell: (props) => {
-          console.log(props);
           return <div>{props.value ? 'Активировано' : 'Не активировано'}</div>;
         },
       },

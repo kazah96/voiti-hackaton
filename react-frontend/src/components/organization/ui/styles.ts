@@ -25,4 +25,7 @@ export const useStyles = makeStyles(() => ({
   actionButton: {
     cursor: 'pointer',
   },
+  link: {
+    textDecoration: 'underline',
+  },
 }));

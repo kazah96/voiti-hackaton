@@ -37,9 +37,7 @@ export class OrganizationStore {
 
   @action
   addWorker = (data) => {
-    return axiosClient.post('workers/add', data).then((response) => {
-      debugger;
-    });
+    return axiosClient.post('workers/add', data).then((response) => {});
   };
 
   @action
