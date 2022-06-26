@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import Logo from '../res/main_logo.svg';
+import NFCLogo from '../res/NFC.svg';
 import {useRootStore} from '../stores/storeProvider';
 import {observer} from 'mobx-react';
 import button from '../res/sinaya_knopka_open_door2.json';
@@ -19,51 +20,85 @@ const ONE_SECOND_IN_MS = 400;
 const PATTERN = [ONE_SECOND_IN_MS, ONE_SECOND_IN_MS];
 
 function ClientKeyApp() {
-  const [playing, setPlaying] = useState(false);
   const store = useRootStore();
   const animationRef = useRef<LottieView>(null);
+  const [buttonCooldown, setButtonCooldown] = useState(false);
 
+  const isDeviceFound = store.bleClientStore.isDeviceFound;
   useEffect(() => {
     store.tagStore.run();
     store.bleClientStore.run();
   }, [store]);
+
+  useEffect(() => {
+    if (store.bleClientStore.isDeviceFound) {
+      stop();
+    } else {
+      play();
+    }
+  }, [store.bleClientStore.isDeviceFound]);
+
+  // const isButtonDisabled =
 
   return (
     <View style={styles.container}>
       <View style={styles.logo}>
         <Logo width={50} />
       </View>
-      <View style={{marginBottom: -70, marginTop: 70}}>
-        {store.tagStore.active ? (
-          <Text style={{color: '#8490D2', fontSize: 24}}>Scanning</Text>
+      <View style={{marginBottom: -100, marginTop: 50}}>
+        {!isDeviceFound ? (
+          <Text style={{color: '#8490D2', fontSize: 24}}>Поиск...</Text>
         ) : (
-          <Text>Loading</Text>
+          <Text style={{color: '#8490D2', fontSize: 24}}>Дверь найдена</Text>
         )}
       </View>
-      <Text>{store.tagStore.token}</Text>
-      {/* <Text>sfd</Text> */}
+
       <TouchableOpacity
         style={{width: 400, height: 400}}
-        // disabled={true}
-        onPress={play}>
+        disabled={!store.bleClientStore.device || buttonCooldown}
+        onPress={open}>
         <LottieView
-          style={{opacity: playing ? 0.65 : 1}}
+          style={{
+            opacity: !store.bleClientStore.device || buttonCooldown ? 0.45 : 1,
+          }}
           ref={animationRef}
           loop={true}
           source={button}
         />
+        <View
+          style={{
+            bottom: -440,
+            // left: '40%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text style={{marginBottom: 20, color: 'lightgray'}}>
+            или приложите к считывателю
+          </Text>
+          <NFCLogo></NFCLogo>
+        </View>
       </TouchableOpacity>
     </View>
   );
 
+  function open() {
+    store.bleClientStore.open();
+    setButtonCooldown(true);
+
+    setTimeout(() => {
+      setButtonCooldown(false);
+    }, 5000);
+  }
+
   function play() {
-    setPlaying(true);
-    animationRef.current.play();
-    Vibration.vibrate(PATTERN);
+    if (animationRef.current) {
+      animationRef.current.play();
+      Vibration.vibrate(PATTERN);
+    }
   }
 
   function stop() {
-    setPlaying(false);
     animationRef.current?.reset();
     animationRef.current?.pause();
   }

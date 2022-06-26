@@ -4,9 +4,18 @@ import {ax} from '../network/http';
 import {Vibration} from 'react-native';
 import {parseKey} from '../utils/encryption';
 import Toast from 'react-native-toast-message';
+import DeviceInfo from 'react-native-device-info';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 type KeysTable = {
-  [deviceId: string]: string;
+  [deviceId: string]: {pass: string; name: string};
+};
+
+type Direction = 'in' | 'out';
+
+type KeyStatuses = {
+  [deviceId: string]: {
+    direction: Direction;
+  };
 };
 
 class ReaderStore {
@@ -16,6 +25,9 @@ class ReaderStore {
   public deviceId = 'asd';
   @observable
   public keysTable: KeysTable = {};
+
+  @observable
+  public keyStatuses: KeyStatuses = {};
 
   @observable
   public name = 'Дверь в толчок';
@@ -41,7 +53,7 @@ class ReaderStore {
         await AsyncStorage.setItem('deviceKey', key);
         this.setDeviceKey(key);
 
-        return false;
+        return true;
       } catch (e) {
         Toast.show({type: 'error', text1: 'Такой ключ активации не найден'});
 
@@ -55,7 +67,15 @@ class ReaderStore {
   }
 
   @action.bound
+  public async intervalFetchInfo() {
+    setInterval(() => {
+      this.getInfo();
+    }, 3000);
+  }
+
+  @action.bound
   public async getInfo() {
+    console.warn('Fetchin info');
     try {
       // console.warn(this.deviceKey);
       const r = await ax.get(`/devices/${this.deviceKey}/update_base`);
@@ -79,6 +99,12 @@ class ReaderStore {
   @action.bound
   public async run() {
     this.beginRead();
+    this.getInfo();
+
+    this.intervalFetchInfo();
+
+    const androidId = await DeviceInfo.getAndroidId();
+    this.deviceId = androidId;
   }
 
   @action.bound
@@ -136,20 +162,26 @@ class ReaderStore {
   }
 
   @action.bound
-  private async sendLog(status: 'success' | 'error') {
+  private async sendLog(
+    status: 'success' | 'error',
+    direction: 'in' | 'out' | null,
+    error?: string,
+  ) {
     const currentDate = Date.now();
     console.log('sending log');
 
     const data = {
       time: currentDate,
-      deviceId: this.deviceId,
-      status,
-      deviceInfo: 'ergerg',
+      workerDeviceId: this.deviceId,
+      isSuccess: !!error,
+      error,
+      direction,
     };
 
     try {
-      await ax.post('/logs/add', JSON.stringify(data));
+      await ax.post('/logs/add', data);
     } catch (e) {
+      console.log('Axios error');
       console.error(e);
     }
   }
@@ -159,17 +191,28 @@ class ReaderStore {
     console.warn(pass, deviceId);
     console.warn(this.keysTable);
     const isValidEntry =
-      this.keysTable[deviceId] && this.keysTable[deviceId] === pass;
+      this.keysTable[deviceId] && this.keysTable[deviceId].pass === pass;
 
     if (this.doorState !== 'idle') {
       return;
     }
     if (!isValidEntry) {
       this.handleDoorState('error');
-      this.sendLog('error');
+      this.sendLog('error', null, 'Key is not valid');
     } else {
+      const currentDirection = this.keyStatuses[deviceId]
+        ? this.keyStatuses[deviceId].direction
+        : 'in';
+
+      Toast.show({
+        text1: `Client: ${this.keysTable[deviceId].name}, Direction: ${currentDirection}`,
+      });
+      this.keyStatuses[deviceId] = {
+        ...(this.keyStatuses[deviceId] || {}),
+        direction: currentDirection === 'in' ? 'out' : 'in',
+      };
       this.handleDoorState('opened');
-      this.sendLog('success');
+      this.sendLog('success', currentDirection);
     }
   }
 }

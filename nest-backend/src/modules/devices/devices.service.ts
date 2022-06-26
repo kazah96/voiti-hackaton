@@ -21,7 +21,7 @@ export class DevicesService {
   }
 
   async createDevice({ name, organizationId }: CreateDeviceDto) {
-    const generatedCode = keyGenerator(10);
+    const generatedCode = keyGenerator(4);
     const createdDevice = await this.deviceModel.create({
       name,
       code: generatedCode,

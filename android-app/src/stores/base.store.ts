@@ -16,7 +16,7 @@ class RootStore {
   public bleClientStore = new BLEClientStore();
 
   @observable
-  public blePeripheralStore = new BLEPeripheralStore();
+  public blePeripheralStore = new BLEPeripheralStore(this);
 
   @observable
   public readerStore = new ReaderStore();
