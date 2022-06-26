@@ -10,6 +10,7 @@ export const Logs = observer(() => {
 
   useEffect(() => {
     getLogs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const columns = useMemo(() => {

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Button, Dialog } from 'shared/ui';
 import { Table, TableProps } from 'shared/ui/Table';
 import { useOrganizationContext } from '../model';
+import { SendDataForm } from '../types';
 import { AddWorker } from './AddWorker';
 import { useStyles } from './styles';
 
@@ -15,7 +16,7 @@ export const UsersOrganization = observer(() => {
   const { control, handleSubmit } = useForm();
 
   const {
-    organization: { getOrganizationUsers, addWorker, organizationUsers },
+    organization: { getOrganizationUsers, generateKeyByToken, addWorker, organizationWorkers },
   } = useOrganizationContext();
   const {
     auth: { user },
@@ -29,13 +30,14 @@ export const UsersOrganization = observer(() => {
   const toggleDialog = () => setOpen(!open);
 
   const onSubmit = (data) => {
-    const result = {
+    const result: SendDataForm = {
       ...data,
       organization: [user.organizations[0]],
     };
 
     addWorker(result).then(() => {
       toggleDialog();
+      generateKeyByToken(result.email);
       getOrganizationUsers(user.organizations[0]);
     });
   };
@@ -62,7 +64,7 @@ export const UsersOrganization = observer(() => {
       <Button variant="outlined" color="primary" onClick={toggleDialog}>
         Добавить в организацию
       </Button>
-      <Table columns={columns} data={organizationUsers} resizable flexible />
+      <Table columns={columns} data={organizationWorkers} resizable flexible />
       <Dialog open={open} onOk={handleSubmit(onSubmit)}>
         <AddWorker control={control} />
       </Dialog>
