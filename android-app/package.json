@@ -1,5 +1,5 @@
 {
-  "name": "AwesomeTSProject",
+  "name": "Voiti",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -29,6 +29,7 @@
     "react-native-cli": "2.0.1",
     "react-native-hce": "^0.1.2",
     "react-native-nfc-manager": "^3.13.3",
+    "react-native-orientation-locker": "^1.5.0",
     "react-native-svg": "^12.3.0",
     "react-native-svg-transformer": "^1.0.0",
     "react-native-toast-message": "^2.1.5",

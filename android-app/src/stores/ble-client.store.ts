@@ -1,9 +1,6 @@
 import {makeAutoObservable, action, observable, computed} from 'mobx';
 import {BleManager, Device} from 'react-native-ble-plx';
 
-const serviceUUID = '00009ABA-0000-1000-8000-00805F9B34FB';
-const chars = '00009ABE-0000-1000-8000-00805F9B34FB';
-
 type Pages = 'addKey' | 'test' | 'client' | 'reader';
 class BLEClientStore {
   @observable public currentPage: Pages = 'addKey';
@@ -34,25 +31,7 @@ class BLEClientStore {
   @action.bound
   public async open() {
     await this.device?.connect();
-    // const allChars = await res?.discoverAllServicesAndCharacteristics();
-    // const qw = await allChars?.characteristicsForService(serviceUUID);
 
-    // console.error(qw);
-    // await qw[0].writeWithResponse('withResponse');
-    // console.warn('Tried to send');
-    // await qw[0].writeWithoutResponse('withoutResponse');
-    // console.warn('Tried to send');
-    // // await qw?(
-    // //   serviceUUID,
-    // //   chars,
-    // //   'ebaaakaa',
-    // // );
-
-    // await res?.writeCharacteristicWithResponseForService(
-    //   serviceUUID,
-    //   chars,
-    //   'ebaaakaa',
-    // );
     console.warn('Tried to send');
   }
 
@@ -69,11 +48,9 @@ class BLEClientStore {
       devices.add(device?.id);
 
       if (error) {
-        // Handle error (scanning will be stopped automatically)
         return;
       }
-      // Check if it is a device you are looking for based on advertisement data
-      // or other criteria.
+
       if (device && device.name === 'DOOR') {
         this.setDevice(device);
         this.manager.stopDeviceScan();

@@ -6,6 +6,7 @@ import {observer} from 'mobx-react';
 import axios from 'axios';
 import DeviceInfo from 'react-native-device-info';
 import Toast from 'react-native-toast-message';
+import Logo from '../res/main_logo.svg';
 
 import LottieView from 'lottie-react-native';
 import {useRootStore} from '../stores/storeProvider';
@@ -42,18 +43,21 @@ function ReaderApp() {
 
   return (
     <View style={[styles.wrapper]}>
+      <View style={styles.logo}>
+        <Logo width={50} />
+      </View>
       {/* <Text>{}</Text> */}
       {/* <AllKeys keyPairs={readerStore.keysTable} /> */}
       <Text
         style={{
           fontSize: 24,
           color: '#8490D2',
-          marginTop: 200,
+          marginTop: 40,
           marginBottom: -200,
         }}>
         {readerStore.name}
       </Text>
-      <TouchableOpacity style={{width: 600, height: 600}}>
+      <TouchableOpacity style={{width: 800, height: 800}}>
         <LottieView ref={animationRef} source={button} loop={false} />
       </TouchableOpacity>
     </View>

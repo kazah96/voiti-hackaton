@@ -52,7 +52,7 @@ function AddKey({}) {
       <Text>{store.tagStore.token}</Text>
       <View style={styles.formContainer}>
         <Text style={styles.header}>Вход</Text>
-        <InputWithLabel label="Вставьте код" onChange={setKey} />
+        <InputWithLabel label="Введите код активации" onChange={setKey} />
         <Text style={{marginTop: 20, color: 'lightgray'}}>
           Активировать режим
         </Text>
@@ -89,6 +89,7 @@ function AddKey({}) {
 const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
+    color: '#1976D2',
     fontWeight: '500',
   },
   button: {

@@ -4,6 +4,7 @@ import {ax} from '../network/http';
 import {Vibration} from 'react-native';
 import {parseKey} from '../utils/encryption';
 import Toast from 'react-native-toast-message';
+import DeviceInfo from 'react-native-device-info';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 type KeysTable = {
   [deviceId: string]: {pass: string; name: string};
@@ -52,7 +53,7 @@ class ReaderStore {
         await AsyncStorage.setItem('deviceKey', key);
         this.setDeviceKey(key);
 
-        return false;
+        return true;
       } catch (e) {
         Toast.show({type: 'error', text1: 'Такой ключ активации не найден'});
 
@@ -66,7 +67,15 @@ class ReaderStore {
   }
 
   @action.bound
+  public async intervalFetchInfo() {
+    setInterval(() => {
+      this.getInfo();
+    }, 3000);
+  }
+
+  @action.bound
   public async getInfo() {
+    console.warn('Fetchin info');
     try {
       // console.warn(this.deviceKey);
       const r = await ax.get(`/devices/${this.deviceKey}/update_base`);
@@ -90,6 +99,12 @@ class ReaderStore {
   @action.bound
   public async run() {
     this.beginRead();
+    this.getInfo();
+
+    this.intervalFetchInfo();
+
+    const androidId = await DeviceInfo.getAndroidId();
+    this.deviceId = androidId;
   }
 
   @action.bound
@@ -157,16 +172,16 @@ class ReaderStore {
 
     const data = {
       time: currentDate,
-      deviceId: this.deviceId,
-      status,
+      workerDeviceId: this.deviceId,
+      isSuccess: !!error,
       error,
       direction,
-      deviceInfo: 'ergerg',
     };
 
     try {
-      await ax.post('/logs/add', JSON.stringify(data));
+      await ax.post('/logs/add', data);
     } catch (e) {
+      console.log('Axios error');
       console.error(e);
     }
   }
