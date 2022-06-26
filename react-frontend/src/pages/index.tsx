@@ -1,7 +1,9 @@
 import { ProtectedRoute } from 'components/user/auth';
 import { Route, Routes } from 'react-router-dom';
 import { LoginPage, RegistrationPage } from './auth';
-import { TestPage } from './test';
+import { HomePage } from './home';
+import { OrganizationPage } from './organization';
+import { ProfilePage } from './profile';
 
 export const Routing = () => {
   return (
@@ -10,7 +12,31 @@ export const Routing = () => {
         path="/"
         element={
           <ProtectedRoute>
-            <TestPage />
+            <HomePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/organization"
+        element={
+          <ProtectedRoute>
+            <OrganizationPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/logs"
+        element={
+          <ProtectedRoute>
+            <HomePage />
           </ProtectedRoute>
         }
       />
